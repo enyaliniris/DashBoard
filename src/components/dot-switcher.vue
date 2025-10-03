@@ -47,6 +47,7 @@ onMounted(() => {
 <style scoped>
 
 .switch {
+    width: auto;
     display: flex;
     justify-content: center;
     gap: 10px;

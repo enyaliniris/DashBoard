@@ -20,6 +20,11 @@ html {
     font-size: 1.6rem;
     color: var(--black);
 }
+
+.f-title-s{
+    font-size: 1.4rem;
+    color: var(--lake-blue);
+}
 .f-32-g-blue{
     font-size: 3.2rem;
     font-weight: 500;
@@ -155,24 +160,26 @@ nav{
 
 .grid-container{
     width: 100%;
+    max-width: 1400px;
+    height: 100%;
     display: grid;
     padding: 2.5rem;
     grid-template-rows: repeat(12, 1fr);
     grid-template-columns: repeat(8, 1fr);;
     gap: 1.5rem;
     grid-template-areas:
-    "pie pie business business business business business refresh"
-    "pie pie business business business business business people"
-    "pie pie business business business business business people"
-    "pie pie business business business business business people"
-    "total total business business business business business people"
-    "total total business business business business business people"
-    "rank rank lifecycle lifecycle lifecycle lifecycle lifecycle lifecycle"
-    "rank rank lifecycle lifecycle lifecycle lifecycle lifecycle lifecycle"
-    "rank rank linechart linechart linechart linechart linechart linechart"
-    "rank rank linechart linechart linechart linechart linechart linechart"
-    "rank rank linechart linechart linechart linechart linechart linechart"
-    "rank rank linechart linechart linechart linechart linechart linechart";
+    "pie pie pie business business business business refresh"
+    "pie pie pie business business business business people"
+    "pie pie pie business business business business people"
+    "pie pie pie business business business business people"
+    "total total total business business business business people"
+    "total total total business business business business people"
+    "rank rank rank lifecycle lifecycle lifecycle lifecycle lifecycle"
+    "rank rank rank lifecycle lifecycle lifecycle lifecycle lifecycle"
+    "rank rank rank linechart linechart linechart linechart linechart"
+    "rank rank rank linechart linechart linechart linechart linechart"
+    "rank rank rank linechart linechart linechart linechart linechart"
+    "rank rank rank linechart linechart linechart linechart linechart";
 
 }
 
@@ -194,6 +201,7 @@ nav{
     justify-content: center;
     align-items: center;
     grid-area: people;
+    max-height: 400px;
 }
 .Business{
     grid-area: business;
@@ -201,6 +209,7 @@ nav{
     padding-right: 30px;
     padding-left: 30px;
     padding-bottom: 30px;
+    max-height: 425px;
 }
 
 .LifeCycle{
@@ -215,6 +224,8 @@ nav{
     padding-right: 30px;
     padding-left: 30px;
     padding-bottom: 20px;
+    max-height: 290px;
+
 }
 .Refresh{
     grid-area: refresh;

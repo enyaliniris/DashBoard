@@ -83,7 +83,7 @@
           </defs>
         </svg>
       </div>
-      <div class="f-title">平均處理時間</div>
+      <div class="f-title-s">平均處理時間</div>
     </div>
 
     <div class="lifecycle-container">
@@ -171,7 +171,7 @@ watchEffect (() =>  {
     const percentage = (item.lifecycle / hoursTotal) * 100;
     let decimalPercentage = percentage.toFixed(2);
  
-    const baseValue = 700; // 基準值 500px
+    const baseValue = 400;
     const calculatedWidth = (baseValue * decimalPercentage) / 100;
     item.width = calculatedWidth + "px"
     item.type = "hour"
@@ -185,7 +185,7 @@ watchEffect (() =>  {
      const percentage = (item.lifecycle / minTotal) * 100;
     let decimalPercentage = percentage.toFixed(2);
  
-    const baseValue = 700; // 基準值 500px
+    const baseValue = 400; 
     const calculatedWidth = (baseValue * decimalPercentage) / 100;
     item.width = calculatedWidth + "px"
     item.type = "min"
@@ -207,12 +207,17 @@ watchEffect (() =>  {
 <style scope>
 /*LifeCycle*/
 
+.clockIcon {
+  width: 40px;   /* 控制顯示大小 */
+  height: 45px;
+}
+
 .svg-element {
-    transform: scale(0.8); /* 以 2 倍比例放大 */
-  }
+  width: 100%;
+  height: 100%;
+}
 
 .lifecycle-container{
-  min-width: 700px;
   display: flex;
 
 }
@@ -234,10 +239,6 @@ watchEffect (() =>  {
     flex-direction: column;
     font-size: 1.5rem;
     position: relative;
-}
-.clockIcon{
-    width: 59px;
-    height: 65px;
 }
 
 

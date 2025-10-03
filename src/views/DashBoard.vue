@@ -53,7 +53,8 @@ provide('LISData', LISData);
 </script>
 
 <template>
-  <section class="grid-container">
+  <div class="main">
+ <section class="grid-container">
     <Pie :LISData="LISData"/>
     <Total :LISData="LISData"/>
     <Refresh @Event="fetchData" />
@@ -63,4 +64,15 @@ provide('LISData', LISData);
     <LifeCycle :LISData="LISData" />
     <LineChart :LISData="LISData" />
   </section>
+  </div>
 </template>
+
+<style>
+.main{
+  width: 100%;
+  max-height: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

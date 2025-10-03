@@ -12,27 +12,36 @@ const inputPassword = ref('');
 const errorMessages = ref({"id" : '',
                            "password" : ''})
 
+// function login(){
+//     errorMessages.value.id = ""
+//      errorMessages.value.password = ""
+
+//     if(inputID.value == "LIS01" && inputPassword.value == "1234"){
+//         Auth.value = true
+//         redirectToBoard()
+//     }else if (inputID.value != "LIS01" && inputPassword.value != "1234"){
+//          Auth.value = false
+//          errorMessages.value.id = "使用者ID錯誤"
+//          errorMessages.value.password = "使用者密碼錯誤"
+//     }else if(inputID.value != "LIS01"){
+//         Auth.value = false
+//         errorMessages.value.id = "使用者ID錯誤"
+//     }else if (inputPassword.value != "1234"){
+//          Auth.value = false
+//         errorMessages.value.password = "使用者密碼錯誤"
+// }
+// }
+
+
 function login(){
+    // 清空錯誤訊息
     errorMessages.value.id = ""
-     errorMessages.value.password = ""
+    errorMessages.value.password = ""
 
-    if(inputID.value == "LIS01" && inputPassword.value == "1234"){
-        Auth.value = true
-        redirectToBoard()
-    }else if (inputID.value != "LIS01" && inputPassword.value != "1234"){
-         Auth.value = false
-         errorMessages.value.id = "使用者ID錯誤"
-         errorMessages.value.password = "使用者密碼錯誤"
-    }else if(inputID.value != "LIS01"){
-        Auth.value = false
-        errorMessages.value.id = "使用者ID錯誤"
-    }else if (inputPassword.value != "1234"){
-         Auth.value = false
-        errorMessages.value.password = "使用者密碼錯誤"
-
+    // 直接認證成功
+    Auth.value = true
+    redirectToBoard()
 }
-}
-
 
 function redirectToBoard() {
   if (Auth.value) {
@@ -46,6 +55,7 @@ function redirectToBoard() {
     <div class="login-container">
     <div class="circle"></div>
     <div class="login-title">歡迎登入 數據庫</div>
+    <div class="f-title">頁面展示，無須輸入帳號密碼</div>
     <div class="login-input">
         <input type="text" placeholder="ID" v-model="inputID">
     </div>

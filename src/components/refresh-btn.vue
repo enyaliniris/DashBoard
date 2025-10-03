@@ -224,6 +224,7 @@ function refresh(){
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 2px;
   padding: 3px;
   border-radius: 15px;
@@ -255,10 +256,9 @@ function refresh(){
 }
 
 .logout-font {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: var(--lake-blue);
-  margin-top: 2px;
   margin-left: 2px;
 }
 .btn-container {
