@@ -1,0 +1,108 @@
+.login{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-title{
+    font-size: 2.8rem;
+    color: var(--lake-blue);
+    margin-bottom: 80px;
+    font-weight: 500;
+}
+.login-container{
+    padding: 40px 50px;
+    width: 400px;
+    max-width: 90%;
+    background-color: #E4EBF5;
+    box-shadow: 4px 4px 10.7px 3px rgba(146, 213, 235, 0.43), -2px -4px 4px 0px #EFFFFF;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden
+}
+
+.circle{
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 1000px;
+    top: 100px;
+    /*background-color: aqua;*/
+    box-shadow: 2px 10px 10px 0px rgba(167, 224, 232, 0.383) inset;
+    z-index: 0;
+
+}
+
+.login-input{
+    z-index: 1;
+    width: 100%;
+    height: 40px;
+    margin: 5px 0;
+   
+    font-size: 1.3rem;
+    letter-spacing: .15px;
+    border: none;
+    outline: none;
+
+    background-color: #ecf0f3;
+    transition: .25s ease;
+    border-radius: 8px;
+
+    box-shadow:
+        inset 2px 2px 4px  #c4d8fa,
+        inset -2px -2px 4px #f9f9f9;
+}
+
+.login-input:focus{
+    border-radius: 8px;
+    box-shadow:
+    inset 3px 3px 8px  #abc8f9,
+    inset -2px -2px 8px  #f9f9f9 !important;
+    outline: none;
+    border: none;
+
+}
+
+.login-input input{
+    text-indent: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+}
+
+.login-input input:focus{
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    box-shadow:
+    inset 3px 3px 8px  rgb(203, 220, 248),
+    inset -3px -3px 8px  #ffffff !important;
+}
+
+.btn{
+    z-index: 1;
+    min-width: 100px;
+    min-height: 30px;
+    border-radius: 20px;
+    background-color:var(--lake-blue) ;
+    border: none;
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0px 5px 10px rgb(179, 200, 234)
+}
+
+.error-message{
+    color: var(--moon-blue);
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    height: 12px;
+}

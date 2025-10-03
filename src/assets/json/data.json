@@ -1,0 +1,311 @@
+{
+    "casetype1_lifecycle_20": 172,
+    "casetype1_lifecycle_21": 0,
+    "casetype1_thisyear_top10_40": [
+        {
+            "bank": "205",
+            "case_count": "214",
+            "bankname": "桃園企金中心"
+        },
+        {
+            "bank": "203",
+            "case_count": "142",
+            "bankname": "台北企金中心一組"
+        },
+        {
+            "bank": "023",
+            "case_count": "135",
+            "bankname": "嘉義分行"
+        },
+        {
+            "bank": "062",
+            "case_count": "135",
+            "bankname": "民權分行"
+        },
+        {
+            "bank": "204",
+            "case_count": "133",
+            "bankname": "高雄企金中心"
+        },
+        {
+            "bank": "005",
+            "case_count": "121",
+            "bankname": "南京東路分行"
+        },
+        {
+            "bank": "077",
+            "case_count": "117",
+            "bankname": "屏東分行"
+        },
+        {
+            "bank": "026",
+            "case_count": "115",
+            "bankname": "忠孝分行"
+        },
+        {
+            "bank": "085",
+            "case_count": "114",
+            "bankname": "五股分行"
+        },
+        {
+            "bank": "082",
+            "case_count": "111",
+            "bankname": "大竹分行"
+        }
+    ],
+    "conn_maxconncount": "1 / 1 / 1",
+    "casetype1_thisyear_top10_41": [
+        {
+            "bank": "010",
+            "case_count": "44",
+            "bankname": "高雄分行"
+        },
+        {
+            "bank": "002",
+            "case_count": "42",
+            "bankname": "營業部"
+        },
+        {
+            "bank": "062",
+            "case_count": "32",
+            "bankname": "民權分行"
+        }
+    ],
+    "casetype1_thisyear20_count": 10316,
+    "casetype4_last1year_count": 0,
+    "casetype1_thisyear10_count": 10263,
+    "casetype1_thisyear30_count": 10588,
+    "casetype1_last1year_count": 40550,
+    "casetype1_lastyear11_count": 0,
+    "this_year": "2023",
+    "casetype1_lifecycle_10": 203,
+    "casetype1_lifecycle_11": 0,
+    "casetype1_thisyear40_count": 4703,
+    "casetype4_total_count": 0,
+    "casetype4_lifecycle": 0,
+    "casetype1_thisyear_top10_10": [
+        {
+            "bank": "026",
+            "case_count": "502",
+            "bankname": "忠孝分行"
+        },
+        {
+            "bank": "023",
+            "case_count": "289",
+            "bankname": "嘉義分行"
+        },
+        {
+            "bank": "015",
+            "case_count": "272",
+            "bankname": "仁愛分行"
+        },
+        {
+            "bank": "068",
+            "case_count": "245",
+            "bankname": "府城分行"
+        },
+        {
+            "bank": "020",
+            "case_count": "211",
+            "bankname": "九如分行"
+        },
+        {
+            "bank": "073",
+            "case_count": "206",
+            "bankname": "苓雅分行"
+        },
+        {
+            "bank": "029",
+            "case_count": "203",
+            "bankname": "桃鶯分行"
+        },
+        {
+            "bank": "091",
+            "case_count": "200",
+            "bankname": "集賢分行"
+        },
+        {
+            "bank": "078",
+            "case_count": "189",
+            "bankname": "和平分行"
+        },
+        {
+            "bank": "035",
+            "case_count": "187",
+            "bankname": "健行分行"
+        }
+    ],
+    "now_before365": "2022/11/24 09:22:35.000",
+    "casetype2_total_count": 126008,
+    "casetype3_total_count": 46013,
+    "casetype1_thisyear_top10_11": [],
+    "lastest_year": "2021",
+    "casetype1_total_count": 139143,
+    "casetype1_lastestyear20_count": 11404,
+    "casetype1_lastestyear40_count": 6901,
+    "casetype1_thisyear11_count": 0,
+    "last_yearDate": "2022/11/24",
+    "conn_maxconnset": "6000 / 4000 / 400",
+    "casetype1_CountbyBusinesstype": [
+        {
+            "year": "2020",
+            "count10": 3062,
+            "count20": 2122,
+            "count30": 5372,
+            "count41": 2,
+            "count40": 947
+        },
+        {
+            "year": "2021",
+            "count10": 18502,
+            "count20": 13526,
+            "count30": 18839,
+            "count41": 96,
+            "count40": 7848
+        },
+        {
+            "year": "2022",
+            "count10": 31972,
+            "count20": 25757,
+            "count30": 31221,
+            "count41": 253,
+            "count40": 13949
+        },
+        {
+            "year": "2023",
+            "count10": 42235,
+            "count20": 36073,
+            "count30": 41809,
+            "count41": 371,
+            "count40": 18651
+        }
+    ],
+    "casetype1_lifecycle_41": 741,
+    "casetype1_lastyear40_count": 6101,
+    "casetype1_lifecycle_40": 490,
+    "last_year": "2022",
+    "casetype1_lastyear10_count": 13470,
+    "casetype1_lastyear20_count": 12231,
+    "users_online": 520,
+    "casetype1_lastyear30_count": 12382,
+    "casetype1_thisyear_top10_21": [],
+    "user_insystime": 57,
+    "casetype3_last1year_count": 12094,
+    "casetype3_lifecycle": 50,
+    "casetype1_thisyear_top10_20": [
+        {
+            "bank": "020",
+            "case_count": "841",
+            "bankname": "九如分行"
+        },
+        {
+            "bank": "017",
+            "case_count": "601",
+            "bankname": "新竹分行"
+        },
+        {
+            "bank": "070",
+            "case_count": "582",
+            "bankname": "富強分行"
+        },
+        {
+            "bank": "015",
+            "case_count": "568",
+            "bankname": "仁愛分行"
+        },
+        {
+            "bank": "034",
+            "case_count": "540",
+            "bankname": "文心分行"
+        },
+        {
+            "bank": "010",
+            "case_count": "449",
+            "bankname": "高雄分行"
+        },
+        {
+            "bank": "003",
+            "case_count": "311",
+            "bankname": "桃園分行"
+        },
+        {
+            "bank": "023",
+            "case_count": "213",
+            "bankname": "嘉義分行"
+        },
+        {
+            "bank": "091",
+            "case_count": "178",
+            "bankname": "集賢分行"
+        },
+        {
+            "bank": "062",
+            "case_count": "175",
+            "bankname": "民權分行"
+        }
+    ],
+    "now": "2023/11/24 09:22:35.088",
+    "users_todaylogin": 12,
+    "casetype1_lastestyear41_count": 94,
+    "casetype1_lastestyear11_count": 0,
+    "casetype1_lastestyear21_count": 0,
+    "casetype1_lifecycle_30": 5,
+    "users_count": 2015,
+    "casetype2_last1year_count": 36208,
+    "casetype1_lastyear21_count": 0,
+    "casetype1_lastyear41_count": 157,
+    "casetype2_lifecycle": 95,
+    "this_yearDate": "2023/11/24",
+    "conn_active": "1 / 1 / 1",
+    "casetype1_thisyear_top10_30": [
+        {
+            "bank": "062",
+            "case_count": "2470",
+            "bankname": "民權分行"
+        },
+        {
+            "bank": "010",
+            "case_count": "1860",
+            "bankname": "高雄分行"
+        },
+        {
+            "bank": "005",
+            "case_count": "1579",
+            "bankname": "南京東路分行"
+        },
+        {
+            "bank": "090",
+            "case_count": "1221",
+            "bankname": "南桃園分行"
+        },
+        {
+            "bank": "068",
+            "case_count": "865",
+            "bankname": "府城分行"
+        },
+        {
+            "bank": "013",
+            "case_count": "696",
+            "bankname": "員林分行"
+        },
+        {
+            "bank": "017",
+            "case_count": "683",
+            "bankname": "新竹分行"
+        },
+        {
+            "bank": "023",
+            "case_count": "615",
+            "bankname": "嘉義分行"
+        },
+        {
+            "bank": "027",
+            "case_count": "599",
+            "bankname": "新莊分行"
+        }
+    ],
+    "casetype1_lastestyear10_count": 15440,
+    "casetype1_lastestyear30_count": 13467,
+    "casetype1_thisyear21_count": 0,
+    "casetype1_thisyear41_count": 118
+}

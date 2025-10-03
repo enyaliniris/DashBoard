@@ -1,0 +1,279 @@
+/*字體*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap');
+
+body{
+    background-color: #D2E5F6 !important;
+    margin: 0px !important;
+}
+/*文字大小*/
+html {
+    font-size: 10px;
+}
+
+.f-title{
+    font-size: 1.6rem;
+    font-weight: 500 !important;
+    color: var(--lake-blue);
+}
+
+.f-16{
+    font-size: 1.6rem;
+    color: var(--black);
+}
+.f-32-g-blue{
+    font-size: 3.2rem;
+    font-weight: 500;
+    background: linear-gradient(311deg, #007183 17.23%, rgba(97, 0, 255, 0.00) 179.83%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+:root{
+    --lake-blue: #01859A;
+    --moon-blue: #6060F0;
+    --cyan: #30E0D0;
+    --yellow: #F8D060;
+    --orange: #F86060;
+    --black: #323232;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+nav{
+    height: 100%;
+    /*background-color: #01859A;*/
+    width: 84px;
+    /*box-shadow: 4px 4px 10.7px 3px rgba(146, 213, 235, 0.43), -2px -4px 4px 0px #EFFFFF;*/
+    border-radius: 0px 30px 30px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*padding-top: 50px;*/
+}
+
+.nav-bk-top{
+    width: 84px;
+    height: 156px;
+    background-color: #01859A;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.nav-bk-bottom{
+    width: 84px;
+    height: calc(100vh - 252px);
+    background-color: #01859A;
+    border-bottom-right-radius: 20px;
+}
+.nav-icon{
+    margin-bottom: 50px;
+}
+.nav-list{
+    width: 84px;
+    height: 78px;
+    background-color: #01859A;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-list span{
+    color: #D2E5F6;
+    text-decoration: none;
+}
+.nav-mid-container{
+    position: relative;
+    width: 84px;
+    height: 157px;
+}
+.nav-list-container{
+    position: absolute;
+    width: 84px;
+    height: 252px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+
+}
+
+.nav-bk-mid{
+    width: 40px;
+    height: 252px;
+    background-color: #01859A;
+    position: absolute;
+    z-index: 0;
+    transition: width 0.1s ease;
+}
+
+.nav-list-active{
+    margin-left: 10px;
+    width: 74px;
+    background: #D2E5F6;
+    
+}
+
+.nav-list-active span{
+    color: #007183;
+}
+
+.unactive{
+    width: 84px;
+    height: 196px;
+    top:-20px;
+    border-radius:0px !important;
+    transition: width 0.1s ease;
+}
+
+.svg-container{
+    width: 64px;
+    height: 64px;
+}
+
+.hr {
+    width: 80%; 
+    height: 1px; 
+    background-color: rgb(153, 153, 153); 
+  }
+
+
+.LISdashboard{
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    font-family: 'Noto Sans TC', sans-serif;
+
+}
+
+.grid-container{
+    width: 100%;
+    display: grid;
+    padding: 2.5rem;
+    grid-template-rows: repeat(12, 1fr);
+    grid-template-columns: repeat(8, 1fr);;
+    gap: 1.5rem;
+    grid-template-areas:
+    "pie pie business business business business business refresh"
+    "pie pie business business business business business people"
+    "pie pie business business business business business people"
+    "pie pie business business business business business people"
+    "total total business business business business business people"
+    "total total business business business business business people"
+    "rank rank lifecycle lifecycle lifecycle lifecycle lifecycle lifecycle"
+    "rank rank lifecycle lifecycle lifecycle lifecycle lifecycle lifecycle"
+    "rank rank linechart linechart linechart linechart linechart linechart"
+    "rank rank linechart linechart linechart linechart linechart linechart"
+    "rank rank linechart linechart linechart linechart linechart linechart"
+    "rank rank linechart linechart linechart linechart linechart linechart";
+
+}
+
+
+
+
+.Total{
+    grid-area: total;
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.People{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-area: people;
+}
+.Business{
+    grid-area: business;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+
+.LifeCycle{
+    grid-area: lifecycle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.LineChart{
+    grid-area: linechart;
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 20px;
+}
+.Refresh{
+    grid-area: refresh;
+}
+
+.InfoCard, .InfoCard-active{
+    /* width: 100%; */
+    border-radius: 30px;
+    transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;; /* 添加阴影过渡效果 */
+}
+.InfoCard{
+    background-color: #E4EBF5;
+    box-shadow: 4px 4px 10.7px 3px rgba(146, 213, 235, 0.43), -2px -4px 4px 0px #EFFFFF;
+}
+
+.InfoCard-active{
+    background-color: #e3f2ff;
+    box-shadow:  4px 4px 8px 3px #EFFFFF , -2px -4px 4px 0px rgba(146, 213, 235, 0.43);
+}
+
+.title{
+    color: var(--black);
+    /*margin-left: 20px;*/
+    /*margin-top: 20px;*/
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.title span{
+    font-size: 1rem !important;
+    font-weight: 300 !important;
+}
+
+
+
+/*切換開關*/
+
+.switch {
+    display: flex;
+    gap: 10px;
+  }
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 214, 222);
+    cursor: pointer;
+}
+  
+.active {
+    background-color: rgb(52, 147, 163);
+}
+
+
+
+
+
+
+
