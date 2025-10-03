@@ -260,6 +260,7 @@ function refresh(){
   font-weight: 500;
   color: var(--lake-blue);
   margin-left: 2px;
+  white-space: nowrap;
 }
 .btn-container {
   width: 50%;
