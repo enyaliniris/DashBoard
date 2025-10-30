@@ -1,5 +1,5 @@
 <template>
-  <div class="People InfoCard" ref="People"  >
+  <div class="InfoCard People" ref="People"  >
     <div v-if="elementHeight < 480">
       <DotSwitcher :DotNum = "2" :switchControl ="switchControl_People" @change-switch="changeSwitchValue" :isColumn="false" :marginLeft="'0px'" />
     <div class="people-container" v-if="switchControl_People === 1">
@@ -84,7 +84,7 @@ onMounted(() => {
       const observer = new ResizeObserver(updateHeight);
       observer.observe(People.value);
 
-      // 组件卸载时清除监听器
+      // 組件卸載時清除監聽器
       onUnmounted(() => {
         window.removeEventListener('resize', updateHeight);
         observer.disconnect();

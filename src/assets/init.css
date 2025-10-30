@@ -168,21 +168,66 @@ nav{
     grid-template-columns: repeat(8, 1fr);;
     gap: 1.5rem;
     grid-template-areas:
-    "pie pie pie business business business business refresh"
-    "pie pie pie business business business business people"
-    "pie pie pie business business business business people"
-    "pie pie pie business business business business people"
-    "total total total business business business business people"
-    "total total total business business business business people"
-    "rank rank rank lifecycle lifecycle lifecycle lifecycle lifecycle"
-    "rank rank rank lifecycle lifecycle lifecycle lifecycle lifecycle"
+    "pie pie pie barchart barchart barchart barchart refresh"
+    "pie pie pie barchart barchart barchart barchart people"
+    "pie pie pie barchart barchart barchart barchart people"
+    "pie pie pie barchart barchart barchart barchart people"
+    "total total total barchart barchart barchart barchart people"
+    "total total total barchart barchart barchart barchart people"
+    "rank rank rank timechart timechart timechart timechart timechart"
+    "rank rank rank timechart timechart timechart timechart timechart"
     "rank rank rank linechart linechart linechart linechart linechart"
     "rank rank rank linechart linechart linechart linechart linechart"
     "rank rank rank linechart linechart linechart linechart linechart"
     "rank rank rank linechart linechart linechart linechart linechart";
+}
+/* 當螢幕寬度小於等於1024px時套用 */
+@media (max-width: 1024px) {
+.grid-container{
+    width: 100%;
+    max-width: 1400px;
+    padding: 2.5rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;   
+    grid-template-areas:
+    "refresh"
+    "pie"
+    "barchart"
+    "people"
+    "total"
+    "rank"
+    "timechart"
+    "linechart";
+}
+.InfoCard{
+    min-width: 400px;
+    padding: 30px 0px;
+}
+.Pie_Container{
+    margin-top: 15px;
+}
+/*時間區塊*/
+.TimeChart { 
+  display: grid !important;
+  grid-template-columns: 1fr auto; /* 左：title 寬度自動撐滿，右：dotswitcher 寬度自適應 */
+  grid-template-rows: auto 1fr;    /* 上：標題列，下：圖表區 */
+  grid-template-areas:
+    "title dotswitcher"
+    "container container";
+  gap: 5.5rem; /* 元素間距可自行調整 */
+  padding: 5.5rem;
+}
+.lifecycle-dotswitcher{
+    grid-area: dotswitcher;
+}
+.lifecycle-container{
+    grid-area: container;
 
 }
-
+.lifecycle-title{
+    grid-area: title;
+}
+}
 
 
 
@@ -203,8 +248,8 @@ nav{
     grid-area: people;
     max-height: 400px;
 }
-.Business{
-    grid-area: business;
+.BarChart{
+    grid-area: barchart;
     padding-top: 20px;
     padding-right: 30px;
     padding-left: 30px;
@@ -212,8 +257,8 @@ nav{
     max-height: 425px;
 }
 
-.LifeCycle{
-    grid-area: lifecycle;
+.TimeChart{
+    grid-area: timechart;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -220,7 +220,7 @@ function refresh(){
 
 <style scope>
 .logout-container {
-  width: 50%;
+  min-width: 150px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -289,6 +289,7 @@ function refresh(){
 .Btn {
   width: 100%;
   border-radius: 15px;
+  min-width: 200px;
   /* background-color: #E4EBF5; */
   /* box-shadow: 4px 4px 10.7px 3px rgba(146, 213, 235, 0.43), -2px -4px 4px 0px #EFFFFF; */
   display: flex;

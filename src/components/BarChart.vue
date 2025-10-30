@@ -1,29 +1,25 @@
 <template>
-  <div class="InfoCard Business">
+  <div class="InfoCard BarChart">
     <div class="f-title">近三年累計案件數</div>
     <canvas ref="LIS_Bar" width="400" height="200"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref , defineProps, watchEffect } from 'vue'
 import Chart from 'chart.js/auto' // 引入 Chart.js
-
+import { useGlobalStore } from '@/stores/global';
+const globalStore = useGlobalStore();
+const labels = globalStore.departmentLabels;
 const props = defineProps({
     LISData: Object,
 })
 
 //時間
-// 取得當前日期的年份
-let currentYear = new Date().getFullYear();
-
-// 去年的年份
-let lastYear = currentYear - 1;
-
-// 前年的年份
-let twoYearsAgo = currentYear - 2;
-
+let currentYear = new Date().getFullYear();// 取得當前日期的年份
+let lastYear = currentYear - 1;// 去年的年份
+let twoYearsAgo = currentYear - 2;// 前年的年份
 let myChart = null;//避免因非同步資料重複建置表單，要每次先將表單銷毀，再建置
-
 let LIS_Bar = ref(null) // 使用 ref 創建 canvas 的引用
 watchEffect(() => {
 if(props.LISData){
@@ -52,7 +48,7 @@ if(props.LISData){
     gradient_purple.addColorStop(1, '#6060F0')
 
     const data = {
-      labels: ['消金', '理貸', '車貸', '企金', '票金'],
+      labels: labels,
       datasets: [
         {
           label: currentYear + '年',

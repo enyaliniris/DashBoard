@@ -1,11 +1,11 @@
 <script setup>
-import Pie from '@/components/LIS-Pie.vue'
-import Total from '@/components/LIS-Total.vue'
-import People from '@/components/LIS-People.vue'
-import Business from '@/components/LIS-Business.vue'
-import Rank from '@/components/LIS-Rank.vue'
-import LifeCycle from '@/components/LIS-LifeCycle.vue'
-import LineChart from '@/components/Line-Chart.vue'
+import PieChart from '@/components/PieChart.vue'
+import TotalProgressBar from '@/components/TotalProgressBar.vue'
+import PeopleCount from '@/components/PeopleCount.vue'
+import BarChart from '@/components/BarChart.vue'
+import RankList from '@/components/RankList.vue'
+import TimeChart from '@/components/TimeChart.vue'
+import LineChart from '@/components/LineChart.vue'
 import Refresh from '@/components/refresh-btn.vue'
 import jsonData from '@/assets/json/data.json';
 import { postLISData } from '@/apis/api_data.js'
@@ -55,13 +55,13 @@ provide('LISData', LISData);
 <template>
   <div class="main">
  <section class="grid-container">
-    <Pie :LISData="LISData"/>
-    <Total :LISData="LISData"/>
+    <PieChart :LISData="LISData"/>
+    <TotalProgressBar :LISData="LISData"/>
     <Refresh @Event="fetchData" />
-    <People />
-    <Business :LISData="LISData" />
-    <Rank :LISData="LISData" />
-    <LifeCycle :LISData="LISData" />
+    <PeopleCount />
+    <BarChart :LISData="LISData" />
+    <RankList :LISData="LISData" />
+    <TimeChart :LISData="LISData" />
     <LineChart :LISData="LISData" />
   </section>
   </div>

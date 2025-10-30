@@ -8,7 +8,7 @@
             <div class="rank">
               <div class="left">
                 <div class="award">1</div>
-                <div class="rank-name">{{item.bankname}}</div>
+                <div class="rank-name">{{item.unitname}}</div>
               </div>
             <div class="rank-num">{{item.case_count}}</div>
           </div>
@@ -26,15 +26,15 @@ let RankList = ref([])
 watchEffect (() =>  {
   if(props.LISData){
 
-    let top10 = props.LISData.casetype1_thisyear_top10_10//消金
-    let top20 = props.LISData.casetype1_thisyear_top10_20//理貸
-    let top30 = props.LISData.casetype1_thisyear_top10_30//理貸
-    let top40 = props.LISData.casetype1_thisyear_top10_40//企金
-    let top41 = props.LISData.casetype1_thisyear_top10_41//票金
-    const department = ["消金", "理貸", "車貸", "企金", "票金"];
+  let top10 = props.LISData.casetype1_thisyear_top10_10 // 研發部
+  let top20 = props.LISData.casetype1_thisyear_top10_20 // 行銷部
+  let top30 = props.LISData.casetype1_thisyear_top10_30 // 客服部
+  let top40 = props.LISData.casetype1_thisyear_top10_40 // 專案部
+  let top41 = props.LISData.casetype1_thisyear_top10_41 // 支援部
 
+  const department = ["研發部", "行銷部", "客服部", "專案部", "支援部"]
 
-    if (top10 && top20 && top30 && top40 && top41) {
+  if (top10 && top20 && top30 && top40 && top41) {
     RankList.value = [top10[0],top20[0],top30[0],top40[0],top41[0]]
     RankList.value =RankList.value.map((item, index) => {
       return {

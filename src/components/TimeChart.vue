@@ -1,5 +1,5 @@
 <template>
-  <div class="InfoCard LifeCycle">
+  <div class="InfoCard TimeChart">
     <div class="lifecycle-title">
       <div class="clockIcon">
         <svg
@@ -105,13 +105,26 @@
       </div>
     </div>
 
-     <DotSwitcher :DotNum = "2" :switchControl ="switchControl_LifeCycle" @change-switch="changeSwitchValue" :isColumn="true" :marginLeft="'60px'" />
+    <div class="lifecycle-dotswitcher">
+     <DotSwitcher :DotNum = "2" :switchControl ="switchControl_LifeCycle" @change-switch="changeSwitchValue" :isColumn="true" :marginLeft="'40px'" />
+    </div>
    
   </div>
 </template>
 <script setup>
 import { ref, defineProps, watchEffect} from 'vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
+import { useGlobalStore } from '@/stores/global';
+const globalStore = useGlobalStore();
+const labels = globalStore.departmentLabels;
+const labelKeys = ["casetype1_lifecycle_10", "casetype1_lifecycle_20", "casetype1_lifecycle_30", "casetype1_lifecycle_40", "casetype1_lifecycle_41"]
+const labelColors = [
+  "linear-gradient(127deg, #66D4E5 5.97%, #01859A 102.98%)",
+  "linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)",
+  "linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)",
+  "linear-gradient(90deg, #F8D060 -18.98%, #FF7D61 113.88%)",
+  "linear-gradient(90deg, #30E0D0 -18.98%, #00AD9D 113.88%)"
+]
 
 const props = defineProps({
     LISData: Object,
@@ -121,7 +134,7 @@ let LIS_LifeCycle = ref([])
 let switchControl_LifeCycle = ref(1)
 
 function changeSwitchValue(receivedNum) {
-    switchControl_LifeCycle.value = receivedNum; // 更新父组件的 switchControl 值
+    switchControl_LifeCycle.value = receivedNum; // 更新父組件的 switchControl 值
 }
 
 function convertToHoursAndMinutes(minutes) {
@@ -131,43 +144,27 @@ function convertToHoursAndMinutes(minutes) {
 }
 watchEffect (() =>  {
   if(props.LISData){
-  let lifeCycle = [{title:"消金",
-                    lifecycle :props.LISData.casetype1_lifecycle_10,
-                    colors:"linear-gradient(127deg, #66D4E5 5.97%, #01859A 102.98%)"},
-                    {title:"理貸",
-                    lifecycle :props.LISData.casetype1_lifecycle_20,
-                    colors:"linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)"},
-                    {title:"車貸",
-                    lifecycle :props.LISData.casetype1_lifecycle_30,
-                    colors:"linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)"},
-                    {title:"企金",
-                    lifecycle :props.LISData.casetype1_lifecycle_40,
-                    colors:"linear-gradient(90deg, #F8D060 -18.98%, #FF7D61 113.88%)"},
-                    {title:"票金",
-                    lifecycle :props.LISData.casetype1_lifecycle_41,
-                    colors:"linear-gradient(90deg, #30E0D0 -18.98%, #00AD9D 113.88%)"},
-                    {title:"鑑估報告",
-                    lifecycle :props.LISData.casetype2_lifecycle,
-                    colors:"linear-gradient(90deg, #7D82D6 -4.86%, #E16464 107.03%)"},
-                    {title:"預估報告案",
-                    lifecycle :props.LISData.casetype3_lifecycle,
-                    colors:"linear-gradient(90deg, #F9C260 -4.86%, #30E0D0 107.03%)"},
-                    {title:"預估報告案",
-                    lifecycle :props.LISData.casetype4_lifecycle,
-                    colors:"linear-gradient(90deg, #6060F0 -4.86%, #A3EFFF 107.03%)"},]
-  console.log("lifeCycle",lifeCycle)
-
+  const commonLifeCycle = labels.map((title, index) => ({
+    title,
+    lifecycle: props.LISData[labelKeys[index]],
+    colors: labelColors[index]
+  }))
+  // 特殊項目
+  const specialLifeCycle = [
+    { title: "鑑估報告", lifecycle: props.LISData.casetype2_lifecycle, colors: "linear-gradient(90deg, #7D82D6 -4.86%, #E16464 107.03%)" },
+    { title: "預估報告案", lifecycle: props.LISData.casetype3_lifecycle, colors: "linear-gradient(90deg, #F9C260 -4.86%, #30E0D0 107.03%)" },
+    { title: "預估報告案", lifecycle: props.LISData.casetype4_lifecycle, colors: "linear-gradient(90deg, #6060F0 -4.86%, #A3EFFF 107.03%)" }
+  ]
+  // 合併
+  const lifeCycle = [...commonLifeCycle, ...specialLifeCycle]
   const hoursGroup = lifeCycle.filter(num => num.lifecycle > 60);
   const minGroup = lifeCycle.filter(num => num.lifecycle <= 60);
 
   let hoursTotal = hoursGroup.reduce((a, b) => a + b.lifecycle, 0)
   let minTotal = minGroup.reduce((a, b) => a + b.lifecycle, 0)
 
-
-
-
   //小時組 的寬度
- hoursGroup.forEach((item)=>{
+  hoursGroup.forEach((item)=>{
     const percentage = (item.lifecycle / hoursTotal) * 100;
     let decimalPercentage = percentage.toFixed(2);
  
@@ -177,7 +174,6 @@ watchEffect (() =>  {
     item.type = "hour"
     item.lifecycle = convertToHoursAndMinutes(item.lifecycle)
  })
-  console.log("hoursGroup", hoursGroup)
 
   
   //分鐘組 的寬度
@@ -191,13 +187,8 @@ watchEffect (() =>  {
     item.type = "min"
     item.lifecycle = item.lifecycle + "分鐘"
   })
-    console.log("minGroup", minGroup)
-
 
    LIS_LifeCycle.value = hoursGroup.concat(minGroup)
-
-   console.log("LIS_LifeCycle",  LIS_LifeCycle.value)
-
   }
 })
 

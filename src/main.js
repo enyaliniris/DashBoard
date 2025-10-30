@@ -6,6 +6,8 @@ import App from './App.vue'
 import router from './router'
 const app = createApp(App)
 import { showModal, errorMessage ,openModalWithErrorMessage, closeModal } from './apis/utils.js';
+import { createPinia } from 'pinia'
+const pinia = createPinia()
 
 
 
@@ -18,5 +20,6 @@ app.provide('globalFunctions', {
   });
 
 app.use(router)
+app.use(pinia)
 
 app.mount('#app')

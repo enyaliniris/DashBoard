@@ -29,7 +29,9 @@ import { ref, defineProps, watchEffect } from 'vue'
 const props = defineProps({
   LISData: Object
 })
-console.log('props', props.LISData)
+import { useGlobalStore } from '@/stores/global';
+const globalStore = useGlobalStore();
+const labels = globalStore.departmentLabels;
 let labelList = ref([])
 const LIS_Pie = ref(null)
 
@@ -83,14 +85,11 @@ watchEffect(() => {
       const sum = partValues.reduce((acc, curr) => acc + curr, 0)
       const percentages = partValues.map((value) => ((value / sum) * 100).toFixed(2) + '%')
 
-      const labels = ['消金', '理貸', '車貸', '企金', '票金']
       labelList.value = percentages.map((percent, index) => ({
         label: labels[index],
         percent,
         color: partColors[index]
       }))
-
-      console.log('labelList', labelList)
     }
   }
 })

@@ -14,19 +14,19 @@
 import { watchEffect, ref, defineProps } from 'vue'
 import Chart from 'chart.js/auto'
 import 'chartjs-plugin-zoom'; 
-
+import { useGlobalStore } from '@/stores/global';
+const globalStore = useGlobalStore();
+const labels = globalStore.departmentLabels;
+const colors = ['#01859A', '#6060F0', '#30E0D0', '#F8D060', '#F86060']
 let LineChart_tempt = null;//避免因非同步資料重複建置表單，要每次先將表單銷毀，再建置
 const props = defineProps({
     LISData: Object,
 })
 const LIS_LineChart = ref(null)
-
-const LineChartLabels = [{title:'消金', color:'#01859A'},
-                         {title:'理貸', color:'#6060F0'},
-                         {title:'車貸', color:'#30E0D0'},
-                         {title:'企金', color:'#F8D060'},
-                         {title:'票金', color:'#F86060'},
-                        ]
+const LineChartLabels = labels.map((label, index) => ({
+  title: label,
+  color: colors[index]
+}))
 
 watchEffect(() => {
 
