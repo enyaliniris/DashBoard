@@ -5,100 +5,85 @@
   </div>
 </template>
 
-<script setup>
-import { ref , defineProps, watchEffect } from 'vue'
-import Chart from 'chart.js/auto' // 引入 Chart.js
-import { useGlobalStore } from '@/stores/global';
-const globalStore = useGlobalStore();
-const labels = globalStore.departmentLabels;
-const props = defineProps({
-    LISData: Object,
-})
+<script lang="ts" setup>
+import { ref, defineProps, watchEffect } from 'vue'
+import Chart, { ChartOptions, ChartData, ChartDataset } from 'chart.js/auto'
+import { useGlobalStore } from '@/stores/global'
+import type { BoardData } from '@/types/BoardData'
 
-//時間
-let currentYear = new Date().getFullYear();// 取得當前日期的年份
-let lastYear = currentYear - 1;// 去年的年份
-let twoYearsAgo = currentYear - 2;// 前年的年份
-let myChart = null;//避免因非同步資料重複建置表單，要每次先將表單銷毀，再建置
-let LIS_Bar = ref(null) // 使用 ref 創建 canvas 的引用
+const props = defineProps<{ LISData?: BoardData }>()
+
+// =====  Pinia store 引入項目標籤名稱 =====
+const globalStore = useGlobalStore()
+const labels: string[] = globalStore.departmentLabels
+
+
+// =====  Canvas 與 Chart 型別 =====
+const LIS_Bar = ref<HTMLCanvasElement | null>(null)
+let myChart: Chart | null = null
+
+// ===== 年份計算 =====
+const currentYear = new Date().getFullYear()
+const lastYear = currentYear - 1
+const twoYearsAgo = currentYear - 2
+
+// ===== 組陣列 ====
+const datasetsConfig = [
+  { year: currentYear, fields: ['thisyear10_count','thisyear20_count','thisyear30_count','thisyear40_count','thisyear41_count'], gradient: ['#F86060','#6060F0'], height: 200 },
+  { year: lastYear, fields: ['lastyear10_count','lastyear20_count','lastyear30_count','lastyear40_count','lastyear41_count'], gradient: ['#F8D060','#30E0D0'], height: 300 },
+  { year: twoYearsAgo, fields: ['lastestyear10_count','lastestyear20_count','lastestyear30_count','lastestyear40_count','lastestyear41_count'], gradient: ['#A3EFFF','#01859A'], height: 300 },
+]
+function createGradient(ctx: CanvasRenderingContext2D, colorStart: string, colorEnd: string, height: number) {
+  const gradient = ctx.createLinearGradient(0, 0, 0, height)
+  gradient.addColorStop(0, colorStart)
+  gradient.addColorStop(1, colorEnd)
+  return gradient
+}
+
+// ===== WatchEffect 建立 Chart =====
 watchEffect(() => {
-if(props.LISData){
- if (LIS_Bar.value) {
-  
-    const ctx = LIS_Bar.value.getContext('2d')
+  if (!props.LISData || !LIS_Bar.value) return
 
-    if (myChart) {
-        myChart.destroy();
-      }
-   
-    const gradient_lakeblue = ctx.createLinearGradient(0, 0, 0, 300)
+  const ctx = LIS_Bar.value.getContext('2d')
+  if (!ctx) return
 
-    
+  if (myChart) {
+    myChart.destroy()
+  }
 
-    //漸層色
-    gradient_lakeblue.addColorStop(0, '#A3EFFF')
-    gradient_lakeblue.addColorStop(1, '#01859A')
+const datasets: ChartDataset<'bar', number[]>[] = datasetsConfig.map(cfg => ({
+  label: `${cfg.year}年`,
+  backgroundColor: createGradient(ctx, cfg.gradient[0], cfg.gradient[1], cfg.height),
+  borderWidth: 1,
+  borderRadius: 20,
+  data: cfg.fields.map(
+    f => props.LISData![`casetype1_${f}` as keyof BoardData] as number
+  )
+}))
 
-    const gradient_cyan = ctx.createLinearGradient(0, 0, 0, 300)
-    gradient_cyan.addColorStop(0, '#F8D060')
-    gradient_cyan.addColorStop(1, '#30E0D0')
+const data: ChartData<'bar'> = {
+  labels,
+  datasets
+}
 
-    const gradient_purple = ctx.createLinearGradient(0, 0, 0, 200)
-    gradient_purple.addColorStop(0, '#F86060')
-    gradient_purple.addColorStop(1, '#6060F0')
-
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: currentYear + '年',
-          backgroundColor: gradient_purple,
-          borderWidth: 1,
-          borderRadius: 20,
-          data: [props.LISData.casetype1_thisyear10_count, props.LISData.casetype1_thisyear20_count, props.LISData.casetype1_thisyear30_count, props.LISData.casetype1_thisyear40_count, props.LISData.casetype1_thisyear41_count]// 每部室今年的業績
-          //data:[100,100,100,100,100]
-        },
-        {
-          label: lastYear + '年',
-          backgroundColor: gradient_cyan,
-          borderWidth: 1,
-          borderRadius: 20,
-          data: [props.LISData.casetype1_lastyear10_count, props.LISData.casetype1_lastyear20_count, props.LISData.casetype1_lastyear30_count, props.LISData.casetype1_lastyear40_count, props.LISData.casetype1_lastyear41_count] // 每部室去年的業績
-          //data:[100,100,100,100,100]
-        },
-         {
-          label: twoYearsAgo + '年',
-          backgroundColor: gradient_lakeblue,
-          borderWidth: 1,
-          borderRadius: 20,
-          data: [props.LISData.casetype1_lastestyear10_count, props.LISData.casetype1_lastestyear20_count, props.LISData.casetype1_lastestyear30_count, props.LISData.casetype1_lastestyear40_count, props.LISData.casetype1_lastestyear41_count] // 每部室去年的業績
-          //data:[100,100,100,100,100]
-        }, 
-        
-      ]
-    }
-
-    // 配置圖表
-    const options = {
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: 'x',
-      plugins: {
-        legend: {
-          position: 'bottom',
-          align: 'end'
-        }
+  // ===== Chart Options =====
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'x',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        align: 'end'
       }
     }
+  }
 
-    // 創建BAR
-    myChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: options
-    })
-  }
-  }
- 
+  // ===== 建立 Chart =====
+  myChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options
+  })
 })
 </script>

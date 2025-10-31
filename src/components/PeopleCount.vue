@@ -1,99 +1,129 @@
 <template>
-  <div class="InfoCard People" ref="People"  >
-    <div v-if="elementHeight < 480">
-      <DotSwitcher :DotNum = "2" :switchControl ="switchControl_People" @change-switch="changeSwitchValue" :isColumn="false" :marginLeft="'0px'" />
-    <div class="people-container" v-if="switchControl_People === 1">
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-lakeblue" :numProp="LISData.users_online"/><span>人</span></div>
-        <span>目前登入使用者</span>
-      </div>
-      <div class="hr"></div>
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-moonblue" :numProp="LISData.users_todaylogin"/><span>人</span></div>
-        <span>今日登入人次</span>
-      </div>
-    </div>
-    <div class="people-container" v-if="switchControl_People === 2">
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-lakeblue" :numProp="LISData.users_count"/><span>人</span></div>
-        <span>系統註冊人數</span>
-      </div>
-      <div class="hr"></div>
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-moonblue" :numProp="LISData.user_insystime"/><span>分鐘</span></div>
-        <span class="text-warp">使用者登入系統平均時間</span>
-      </div>
-    </div>
+  <div class="InfoCard People" ref="People">
+    <!-- 小螢幕 DotSwitcher -->
+    <DotSwitcher
+      v-if="elementHeight < 480"
+      :DotNum="2"
+      :switchControl="switchControl_People"
+      @change-switch="changeSwitchValue"
+      :isColumn="false"
+      :marginLeft="'0px'"
+    />
 
-    </div>
-    <div v-else>
     <div class="people-container">
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-lakeblue" :numProp="LISData.users_online"/><span>人</span></div>
-        <span>目前登入使用者</span>
-      </div>
-      <div class="hr"></div>
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-moonblue" :numProp="LISData.users_todaylogin"/><span>人</span></div>
-        <span>今日登入人次</span>
-      </div>
-      <div class="hr"></div>
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-lakeblue" :numProp="LISData.users_count"/><span>人</span></div>
-        <span>系統註冊人數</span>
-      </div>
-      <div class="hr"></div>
-      <div class="numInfo">
-        <div><NumCounter classProp="f-32-moonblue" :numProp="LISData.user_insystime"/><span>分鐘</span></div>
-        <span class="text-warp">使用者登入系統平均時間</span>
+      <div
+        v-for="section in visibleSections"
+        :key="section.title"
+        class="numInfo"
+      >
+        <div>
+          <NumCounter
+            :classProp="section.colorClass"
+            :numProp="section.value"
+          />
+          <span class="f-16-black">{{ section.unit }}</span>
+        </div>
+        <span class="f-16-black" :class="section.textWarp ? 'text-warp' : ''">{{ section.title }}</span>
       </div>
     </div>
   </div>
-  </div>
-
 </template>
-<script setup>
-import { ref, inject, onMounted, onUnmounted } from 'vue'
+
+<script lang="ts" setup>
+import { ref, inject, onMounted, onUnmounted, computed } from 'vue'
 import NumCounter from '@/components/num-counter.vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
-//切換顯示
-const switchControl_People = ref(1)
 
-function changeSwitchValue(receivedNum) {
-    switchControl_People.value = receivedNum; // 更新父组件的 switchControl 值
+// Type 定義
+interface LISDataType {
+  users_online: number
+  users_todaylogin: number
+  users_count: number
+  user_insystime: number
 }
 
+// DotSwitcher 狀態
+const switchControl_People = ref(1)
+function changeSwitchValue(receivedNum: number) {
+  switchControl_People.value = receivedNum
+}
 
-//取得資料
-const LISData = inject('LISData');
-//console.log("inject",LISData)
-const elementHeight = ref(0);
-const People = ref(null);
+// 取得資料
+const LISData = inject<LISDataType>('LISData')!
+
+// 監控元素高度
+const elementHeight = ref(0)
+const People = ref<HTMLElement | null>(null)
+let observer: ResizeObserver | null = null
+
 const updateHeight = () => {
-   if (People.value) {
-      elementHeight.value = People.value.offsetHeight;
-   }
-};
-
+  if (People.value) elementHeight.value = People.value.offsetHeight
+}
 
 onMounted(() => {
-      updateHeight();
+  updateHeight()
+  window.addEventListener('resize', updateHeight)
 
-      // 監聽窗口大小變化以及元素變化
-      window.addEventListener('resize', updateHeight);
-      const observer = new ResizeObserver(updateHeight);
-      observer.observe(People.value);
+  observer = new ResizeObserver(updateHeight)
+  if (People.value) observer.observe(People.value)
+})
 
-      // 組件卸載時清除監聽器
-      onUnmounted(() => {
-        window.removeEventListener('resize', updateHeight);
-        observer.disconnect();
-      });
-    });
+onUnmounted(() => {
+  window.removeEventListener('resize', updateHeight)
+  observer?.disconnect()
+})
 
+// sections 抽象化
+interface Section {
+  title: string
+  value: number
+  unit: string
+  colorClass: string
+  textWarp?: boolean
+  switchNum: number
+}
+
+const sections = computed<Section[]>(() => [
+  {
+    title: '目前登入使用者',
+    value: LISData?.users_online ?? 0,
+    unit: '人',
+    colorClass: 'f-32-lakeblue',
+    switchNum: 1
+  },
+  {
+    title: '今日登入人次',
+    value: LISData?.users_todaylogin ?? 0,
+    unit: '人',
+    colorClass: 'f-32-moonblue',
+    switchNum: 1
+  },
+  {
+    title: '系統註冊人數',
+    value: LISData?.users_count ?? 0,
+    unit: '人',
+    colorClass: 'f-32-lakeblue',
+    switchNum: 2
+  },
+  {
+    title: '使用者登入系統平均時間',
+    value: LISData?.user_insystime ?? 0,
+    unit: '分鐘',
+    colorClass: 'f-32-moonblue',
+    textWarp: true,
+    switchNum: 2
+  }
+])
+
+// 根據螢幕大小與切換值過濾
+const visibleSections = computed(() =>
+  elementHeight.value < 480
+    ? sections.value.filter(s => s.switchNum === switchControl_People.value)
+    : sections.value
+)
 </script>
 
-<style scope>
+<style scoped>
 .people-container {
   display: flex;
   flex-direction: column;
@@ -108,7 +138,7 @@ onMounted(() => {
   gap: 5px;
 }
 
-.People span {
+.f-16-black{
   font-size: 1.6rem;
   color: var(--black);
 }
@@ -119,6 +149,4 @@ onMounted(() => {
   line-height: 1.1;
   text-align: center;
 }
-
-
 </style>

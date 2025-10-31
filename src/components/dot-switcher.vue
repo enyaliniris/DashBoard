@@ -1,69 +1,89 @@
 <template>
-  <div class="switch" :class="{'column' : props.isColumn}" :style="{marginLeft:props.marginLeft}">
+  <div class="switch" :class="{ column: props.isColumn }" :style="{ marginLeft: props.marginLeft }">
     <div v-for="num in props.DotNum" :key="num">
-      <div :class="{ 'active': props.switchControl === num }" class="dot" @click="handleSwitch(num)"></div>
+      <div
+        class="dot"
+        :class="{ active: props.switchControl === num }"
+        @click="handleSwitch(num)"
+      ></div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { defineProps, defineEmits , onMounted, onBeforeUnmount} from 'vue'
+<script lang="ts" setup>
+import { defineProps, defineEmits, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
-const emit = defineEmits(['change-switch'])
-
-const props = defineProps({
-    DotNum: Number,
-    switchControl : Number,
-    isColumn : Boolean,
-    marginLeft : String
-})
-
-function handleSwitch(sendNum) {
-  emit('change-switch', sendNum)
+// ===== Props 型別定義 =====
+interface Props {
+  DotNum: number
+  switchControl: number
+  isColumn?: boolean
+  marginLeft?: string
 }
 
-let switchTempt = 1
-//每隔30秒切換
-onMounted(() => {
+const props = defineProps<Props>()
 
-  const timer = setInterval(() => {
+// ===== Emit 型別定義 =====
+const emit = defineEmits<(e: 'change-switch', value: number) => void>()
 
-    if(switchTempt < props.DotNum){
-     switchTempt = switchTempt + 1
-    }else{
-      switchTempt = 1
+// ===== 點擊時觸發切換事件 =====
+function handleSwitch(num: number) {
+  switchTempt.value = num         // 更新暫存值
+  emit('change-switch', num)      // 發射事件給父組件
+  startAutoSwitch()               // 重置自動計時器
+}
+
+// ===== 計時器與暫存值 =====
+const switchTempt = ref(1)
+let timer: number | undefined
+
+// ===== 自動切換函式 =====
+function startAutoSwitch() {
+  if (timer) clearInterval(timer) // 清除舊計時器
+  timer = setInterval(() => {
+    if (switchTempt.value < props.DotNum) {
+      switchTempt.value += 1
+    } else {
+      switchTempt.value = 1
     }
-    // 15秒
-    emit('change-switch', switchTempt)
+    emit('change-switch', switchTempt.value)
   }, 15000)
+}
 
-  onBeforeUnmount(() => {
-    clearInterval(timer) // 组件銷毀時清除定時器，避免内存泄漏
-  })
+// ===== 監聽 DotNum 改變，自動更新計時器 =====
+watch(() => props.DotNum, () => {
+  switchTempt.value = 1
+  startAutoSwitch()
 })
 
+// ===== 元件掛載時啟動計時器 =====
+onMounted(() => {
+  startAutoSwitch()
+})
+
+// ===== 元件卸載時清除計時器 =====
+onBeforeUnmount(() => {
+  if (timer) clearInterval(timer)
+})
 </script>
 
 <style scoped>
-
 .switch {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
 .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    background-color: rgb(167, 214, 222);
-    cursor: pointer;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: rgb(167, 214, 222);
+  cursor: pointer;
 }
-  
 .active {
-    background-color: rgb(52, 147, 163);
+  background-color: rgb(52, 147, 163);
 }
-.column{
+.column {
   flex-direction: column;
 }
 </style>
