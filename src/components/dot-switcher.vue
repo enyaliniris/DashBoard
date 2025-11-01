@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { defineEmits, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
 // ===== Props 型別定義 =====
 interface Props {

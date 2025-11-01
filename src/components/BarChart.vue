@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import Chart, { ChartOptions, ChartData, ChartDataset } from 'chart.js/auto'
 import { useGlobalStore } from '@/stores/global'
 import type { BoardData } from '@/types/BoardData'

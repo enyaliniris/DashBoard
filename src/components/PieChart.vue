@@ -24,78 +24,102 @@
   </div>
 </template>
 
-<script setup>
-import { ref, defineProps, watchEffect } from 'vue'
-const props = defineProps({
-  LISData: Object
-})
-import { useGlobalStore } from '@/stores/global';
-const globalStore = useGlobalStore();
-const labels = globalStore.departmentLabels;
-let labelList = ref([])
-const LIS_Pie = ref(null)
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue'
+import { useGlobalStore } from '@/stores/global'
+import type { BoardData } from '@/types/BoardData'
 
+
+const props = defineProps<{
+  LISData?: BoardData
+}>()
+
+// 取全域 store
+const globalStore = useGlobalStore()
+const labels = globalStore.departmentLabels as string[]
+
+// labelList 型別
+interface LabelItem {
+  label: string
+  percent: string
+  color: string
+}
+const labelList = ref<LabelItem[]>([])
+
+// Canvas 參照
+const LIS_Pie = ref<HTMLCanvasElement | null>(null)
+
+// 監聽資料變化並重繪
 watchEffect(() => {
-  if (props.LISData) {
-    if (LIS_Pie.value) {
-      const canvas = LIS_Pie.value
-      const context = canvas.getContext('2d')
-      const x = canvas.width / 2
-      const y = canvas.height / 2
-      const radius = 50
-      const lineWidth = 15
-      const totalParts = 5
-      const partValues = [
-        props.LISData.casetype1_thisyear10_count,
-        props.LISData.casetype1_thisyear20_count,
-        props.LISData.casetype1_thisyear30_count,
-        props.LISData.casetype1_thisyear40_count,
-        props.LISData.casetype1_thisyear41_count
-      ]
-      const partColors = ['#01859A', '#6060F0', '#F8D060', '#30E0D0', '#F86060']
-      const gradientColors = ['#C1E1FF', '#C1E1FF', '#FFDD7C', '#C1E1FF', '#F88460']
+  if (!props.LISData || !LIS_Pie.value) return
 
-      let startAngle = 0
-      const gapDegrees = 20
+  const canvas = LIS_Pie.value
+  const context = canvas.getContext('2d')
+  if (!context) return
 
-      context.lineWidth = lineWidth
-      context.lineCap = 'round'
+  const x = canvas.width / 2
+  const y = canvas.height / 2
+  const radius = 50
+  const lineWidth = 15
+  const totalParts = 5
 
-      const sumValues = partValues.reduce((a, b) => a + b, 0)
-      const totalDegrees = 360 - totalParts * gapDegrees
+  const partValues = [
+    props.LISData.casetype1_thisyear10_count,
+    props.LISData.casetype1_thisyear20_count,
+    props.LISData.casetype1_thisyear30_count,
+    props.LISData.casetype1_thisyear40_count,
+    props.LISData.casetype1_thisyear41_count
+  ]
+  const partColors = ['#01859A', '#6060F0', '#F8D060', '#30E0D0', '#F86060']
+  const gradientColors = ['#C1E1FF', '#C1E1FF', '#FFDD7C', '#C1E1FF', '#F88460']
 
-      for (let i = 0; i < totalParts; i++) {
-        const adjustedStartAngle = startAngle + Math.PI * 2 * (gapDegrees / 360)
-        const endAngle =
-          adjustedStartAngle + Math.PI * 2 * (((partValues[i] / sumValues) * totalDegrees) / 360)
+  let startAngle = 0
+  const gapDegrees = 20
 
-        const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height)
-        gradient.addColorStop(0, partColors[i])
-        gradient.addColorStop(1, gradientColors[i])
+  context.lineWidth = lineWidth
+  context.lineCap = 'round'
 
-        context.beginPath()
-        context.strokeStyle = gradient
-        context.arc(x, y, radius, adjustedStartAngle, endAngle, false)
-        context.stroke()
+  const sumValues = partValues.reduce((a, b) => a + b, 0)
+  const totalDegrees = 360 - totalParts * gapDegrees
 
-        startAngle = endAngle
-      }
+  for (let i = 0; i < totalParts; i++) {
+    const adjustedStartAngle = startAngle + Math.PI * 2 * (gapDegrees / 360)
+    const endAngle =
+      adjustedStartAngle + Math.PI * 2 * (((partValues[i] / sumValues) * totalDegrees) / 360)
 
-      //計算百分比
-      const sum = partValues.reduce((acc, curr) => acc + curr, 0)
-      const percentages = partValues.map((value) => ((value / sum) * 100).toFixed(2) + '%')
+    const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height)
+    gradient.addColorStop(0, partColors[i])
+    gradient.addColorStop(1, gradientColors[i])
 
-      labelList.value = percentages.map((percent, index) => ({
-        label: labels[index],
-        percent,
-        color: partColors[index]
-      }))
-    }
+    context.beginPath()
+    context.strokeStyle = gradient
+    context.arc(x, y, radius, adjustedStartAngle, endAngle, false)
+    // 在 canvas 上畫弧線或圓形
+    // x, y：圓心的座標 radius：半徑 
+    // sAngle（startAngle）：起始角度（以「弧度」為單位），0 表示最右側（3點鐘方向）
+    // eAngle（endAngle）：結束角度（以「弧度」為單位）
+    // counterclockwise（可選）：是否逆時針畫弧，預設為 false（順時針）
+    context.stroke()
+
+    startAngle = endAngle
+
+ 
+  
   }
+
+  // 計算百分比
+  const sum = partValues.reduce((acc, curr) => acc + curr, 0)
+  const percentages = partValues.map((value) => ((value / sum) * 100).toFixed(2) + '%')
+
+  labelList.value = percentages.map((percent, index) => ({
+    label: labels[index],
+    percent,
+    color: partColors[index]
+  }))
 })
 </script>
 
-<style scope>
+<style scoped>
 /*Pie*/
 .Pie span {
   font-size: 1.6rem;
@@ -111,7 +135,7 @@ watchEffect(() => {
   gap: 5%;
 }
 
-.Pie_Container{
+.Pie_Container {
   display: flex;
 }
 
@@ -171,10 +195,6 @@ watchEffect(() => {
 }
 
 .LabelList {
-  /*top: 20px;*/
-  /*right: 105px;*/
-  /*position: absolute;*/
-  /*margin-top:15px;*/
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -192,7 +212,7 @@ watchEffect(() => {
 
 .label span {
   font-size: 1.4rem;
-  transition: font-size 0.3s ease; /* 添加过渡效果，0.3s为过渡时间，可以根据需要调整 */
+  transition: font-size 0.3s ease;
 }
 
 .label:hover span {
@@ -204,17 +224,4 @@ watchEffect(() => {
   height: 17px;
   border-radius: 17px;
 }
-
-/* .label-tip{
-    display: none;
-    position: absolute;
-    background-color: #3a3d5c;
-    color: #ffffff;
-    font-size: 1.5rem;
-    border-radius: 10px;
-    padding: 5px;
-    z-index: 1;
-    top: 20px;
-    left: 0;
-} */
 </style>

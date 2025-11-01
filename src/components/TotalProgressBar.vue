@@ -71,7 +71,7 @@
   </div>
 </template>
 <script setup>
-import { ref, defineProps, watchEffect,} from 'vue'
+import { ref, watchEffect,} from 'vue'
 import NumCounter from '@/components/num-counter.vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
 

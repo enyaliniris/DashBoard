@@ -199,8 +199,8 @@
 </template>
 
 <script setup>
-import { getAuth } from '@/router/index.js'
-const Auth = getAuth
+import { useAuthStore } from '@/stores/auth'
+const Auth = useAuthStore()
 
 import { useRouter } from 'vue-router'
 const router = useRouter()

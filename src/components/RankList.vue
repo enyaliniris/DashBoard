@@ -17,41 +17,52 @@
     </div>
   </div>
 </template>
-<script setup>
-import { ref, defineProps, watchEffect} from 'vue'
-const props = defineProps({
-    LISData: Object,
-})
-let RankList = ref([]) 
-watchEffect (() =>  {
-  if(props.LISData){
+<script lang="ts" setup>
+import { ref, watchEffect } from 'vue'
+import type { BoardData } from '@/types/BoardData'
 
-  let top10 = props.LISData.casetype1_thisyear_top10_10 // 研發部
-  let top20 = props.LISData.casetype1_thisyear_top10_20 // 行銷部
-  let top30 = props.LISData.casetype1_thisyear_top10_30 // 客服部
-  let top40 = props.LISData.casetype1_thisyear_top10_40 // 專案部
-  let top41 = props.LISData.casetype1_thisyear_top10_41 // 支援部
+// 定義 props
+const props = defineProps<{
+  LISData?: BoardData
+}>()
 
-  const department = ["研發部", "行銷部", "客服部", "專案部", "支援部"]
+// 定義單筆排行榜資料的型別
+interface RankItem {
+  unitname: string
+  case_count: string | number
+  department?: string
+}
+//  排行榜陣列
+const RankList = ref<RankItem[]>([])
 
-  if (top10 && top20 && top30 && top40 && top41) {
-    RankList.value = [top10[0],top20[0],top30[0],top40[0],top41[0]]
-    RankList.value =RankList.value.map((item, index) => {
-      return {
-        ...item,
-        department: department[index] // 使用 index 對應 department 的值
-      };
-    });
-   // RankList.value.sort((a, b) => parseInt(b.case_count) - parseInt(a.case_count));
+watchEffect(() => {
+  if (props.LISData) {
+    const {
+      casetype1_thisyear_top10_10: top10,
+      casetype1_thisyear_top10_20: top20,
+      casetype1_thisyear_top10_30: top30,
+      casetype1_thisyear_top10_40: top40,
+      casetype1_thisyear_top10_41: top41
+    } = props.LISData
+
+    const department = ['研發部', '行銷部', '客服部', '專案部', '支援部']
+
+    // 確保五個陣列都有資料
+    if (top10 && top20 && top30 && top40 && top41) {
+      RankList.value = [top10[0], top20[0], top30[0], top40[0], top41[0]].map(
+        (item, index) => ({
+          ...item,
+          department: department[index]
+        })
+      )
+
+      // 若前端要使用排序邏輯：
+      // RankList.value.sort((a, b) => Number(b.case_count) - Number(a.case_count))
     }
-
- 
-    console.log("RankList", RankList)
-
   }
 })
-
 </script>
+
 <style scope>
 
 .Rank{

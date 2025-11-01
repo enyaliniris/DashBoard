@@ -112,7 +112,7 @@
   </div>
 </template>
 <script setup>
-import { ref, defineProps, watchEffect} from 'vue'
+import { ref, watchEffect} from 'vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
 import { useGlobalStore } from '@/stores/global';
 const globalStore = useGlobalStore();

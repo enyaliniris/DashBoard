@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watchEffect, ref, defineProps } from 'vue'
+import { watchEffect, ref } from 'vue'
 import Chart from 'chart.js/auto'                 // 只導入默認 Chart
 import type { ChartData, ChartOptions } from 'chart.js' // 型別用 import type
 import 'chartjs-plugin-zoom'

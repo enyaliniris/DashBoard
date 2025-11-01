@@ -10,6 +10,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "ant-design-vue": "^4.0.0-rc.6",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
     "chartjs-plugin-zoom": "^2.0.1",
@@ -26,10 +27,12 @@
     "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/tsconfig": "^0.8.1",
+    "consola": "^3.4.2",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.33.0",
     "prettier": "^3.0.3",
     "typescript": "^5.9.3",
-    "vite": "^4.4.11"
+    "vite": "^4.4.11",
+    "vite-plugin-style-import": "^2.0.0"
   }
 }
