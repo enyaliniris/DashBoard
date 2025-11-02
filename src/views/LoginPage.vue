@@ -3,30 +3,23 @@
     <div class="login-container">
       <div class="circle"></div>
       <div class="login-title">歡迎登入 數據庫</div>
-      <div class="f-title">頁面展示，帳號密碼隨意輸入</div>
+      <div class="f-title mb-6">頁面展示，帳號密碼自訂</div>
 
-      <a-form
-        :model="form"
-        :rules="rules"
-        ref="loginFormRef"
-        layout="vertical"
-      >
-        <a-form-item label="使用者ID" name="id">
-          <a-input
-            v-model:value="form.id"
-            placeholder="請輸入使用者ID"
-          />
+      <a-form :model="form" :rules="rules" ref="loginFormRef" layout="vertical" :validate-trigger="['change', 'blur']">
+        <!-- 使用者ID -->
+        <a-form-item label="使用者ID" name="id" :validate-status="idStatus" :help="idHelp">
+          <a-input v-model:value="form.id" placeholder="請輸入使用者ID" @input="validateIDInput" />
         </a-form-item>
 
-        <a-form-item label="密碼" name="password">
-          <a-input-password
-            v-model:value="form.password"
-            placeholder="請輸入密碼"
-          />
+        <!-- 密碼 -->
+        <a-form-item label="密碼" name="password" :validate-status="passwordStatus" :help="passwordHelp">
+          <a-input-password v-model:value="form.password" placeholder="請輸入密碼" @input="validatePasswordInput" />
         </a-form-item>
 
         <a-form-item>
-          <a-button type="primary" block @click="login">登入</a-button>
+          <a-button class="!bg-sky-500 hover:!bg-sky-600 border-none text-white" block @click="login">
+            登入
+          </a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -48,45 +41,72 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import type { FormInstance } from 'ant-design-vue'
 
-// 按需引入 Ant Design Vue 元件
-import { Form, Input, Button } from 'ant-design-vue'
 
 const auth = useAuthStore()
 const router = useRouter()
 
 const loginFormRef = ref<FormInstance | null>(null)
+const rules = {
+  id: [
+    { required: true, message: '請輸入使用者ID', trigger: 'change' },
+    { min: 3, message: '至少輸入 3 個字元', trigger: 'change' }
+  ],
+  password: [
+    { required: true, message: '請輸入密碼', trigger: 'change' },
+    { min: 6, message: '密碼至少 6 個字元', trigger: 'change' }
+  ]
+}
 
 const form = ref({
   id: '',
   password: ''
 })
 
-// 即時驗證規則
-const rules = ref({
-  id: [{ required: true, message: '請輸入使用者ID', trigger: 'blur' }],
-  password: [
-    { required: true, message: '請輸入密碼', trigger: 'blur' }
-  ]
-})
+// 即時驗證狀態
+const idStatus = ref<'success' | 'error' | ''>('')
+const passwordStatus = ref<'success' | 'error' | ''>('')
 
-function login() {
-  loginFormRef.value?.validate().then((valid) => {
-    if (valid) {
-      auth.setToken('dummy-token')
-      auth.setUser({
-        username: form.value.id || 'DemoUser',
-        roles: ['user']
-      })
-      redirectToBoard()
-    }
-  }).catch(() => {
-    console.log('表單驗證失敗')
-  })
+const idHelp = ref('')
+const passwordHelp = ref('')
+
+// 簡單驗證函式
+function validateIDInput() {
+  if (!form.value.id) {
+    idStatus.value = 'error'
+    idHelp.value = '請輸入使用者ID'
+  } else if (form.value.id.length < 3) {
+    idStatus.value = 'error'
+    idHelp.value = '至少輸入 3 個字元'
+  } else {
+    idStatus.value = 'success'
+    idHelp.value = ''
+  }
 }
 
-function redirectToBoard() {
-  if (auth.isLoggedIn) {
-    console.log('go to dash board')
+function validatePasswordInput() {
+  if (!form.value.password) {
+    passwordStatus.value = 'error'
+    passwordHelp.value = '請輸入密碼'
+  } else if (form.value.password.length < 6) {
+    passwordStatus.value = 'error'
+    passwordHelp.value = '密碼至少 6 個字元'
+  } else {
+    passwordStatus.value = 'success'
+    passwordHelp.value = ''
+  }
+}
+
+function login() {
+  // 先驗證即時訊息
+  validateIDInput()
+  validatePasswordInput()
+
+  if (idStatus.value === 'success' && passwordStatus.value === 'success') {
+    auth.setToken('dummy-token')
+    auth.setUser({
+      username: form.value.id || 'DemoUser',
+      roles: ['user']
+    })
     router.push('/dashboard')
   }
 }
@@ -96,6 +116,7 @@ function redirectToBoard() {
 .login {
   z-index: 2;
 }
+
 .circle-mask {
   position: absolute;
   width: 1500px;
@@ -109,6 +130,7 @@ function redirectToBoard() {
   filter: blur(50px);
   opacity: 0.8;
 }
+
 .bk {
   background-color: #d2e5f6 !important;
   position: absolute;
@@ -116,62 +138,5 @@ function redirectToBoard() {
   height: 100vh;
   z-index: -1;
   overflow: hidden;
-}
-@keyframes jumbo {
-  from {
-    background-position: 50% 50%, 50% 50%;
-  }
-  to {
-    background-position: 350% 50%, 350% 50%;
-  }
-}
-.jumbo {
-  --stripes: repeating-linear-gradient(
-    100deg,
-    #fff 0%,
-    #fff 7%,
-    transparent 10%,
-    transparent 12%,
-    #fff 16%
-  );
-  --stripesDark: repeating-linear-gradient(
-    100deg,
-    #000 0%,
-    #000 7%,
-    transparent 10%,
-    transparent 12%,
-    #000 16%
-  );
-  --rainbow: repeating-linear-gradient(
-    100deg,
-    #60a5fa 10%,
-    #e879f9 15%,
-    #60a5fa 20%,
-    #5eead4 25%,
-    #60a5fa 30%
-  );
-  background-image: var(--stripes), var(--rainbow);
-  background-size: 300%, 200%;
-  background-position: 50% 50%, 50% 50%;
-  filter: blur(30px) invert(100%);
-  mask-image: radial-gradient(ellipse at 100% 0%, rgb(255, 255, 255) 40%, transparent 70%);
-  pointer-events: none;
-}
-.jumbo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--stripes), var(--rainbow);
-  background-size: 200%, 100%;
-  animation: jumbo 60s linear infinite;
-  background-attachment: fixed;
-  mix-blend-mode: difference;
-}
-.dark .jumbo {
-  background-image: var(--stripesDark), var(--rainbow);
-  filter: blur(10px) opacity(50%) saturate(200%);
-}
-.dark .jumbo::after {
-  background-image: var(--stripesDark), var(--rainbow);
 }
 </style>

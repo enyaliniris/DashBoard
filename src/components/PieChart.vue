@@ -57,6 +57,8 @@ watchEffect(() => {
   const context = canvas.getContext('2d')
   if (!context) return
 
+  context.clearRect(0, 0, canvas.width, canvas.height) //清空畫布，避免重疊
+
   const x = canvas.width / 2
   const y = canvas.height / 2
   const radius = 50
@@ -103,8 +105,8 @@ watchEffect(() => {
 
     startAngle = endAngle
 
- 
-  
+
+
   }
 
   // 計算百分比

@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // 預設的 API base URL，可以根據需求修改
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://your-api-domain.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 /**
  * postLISData
