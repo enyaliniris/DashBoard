@@ -1,26 +1,13 @@
 <template>
   <div class="InfoCard People" ref="People">
     <!-- 小螢幕 DotSwitcher -->
-    <DotSwitcher
-      v-if="elementHeight < 480"
-      :DotNum="2"
-      :switchControl="switchControl_People"
-      @change-switch="changeSwitchValue"
-      :isColumn="false"
-      :marginLeft="'0px'"
-    />
+    <DotSwitcher v-if="elementHeight < 480" :DotNum="2" :switchControl="switchControl_People"
+      @change-switch="changeSwitchValue" :isColumn="false" :marginLeft="'0px'" />
 
     <div class="people-container">
-      <div
-        v-for="section in visibleSections"
-        :key="section.title"
-        class="numInfo"
-      >
+      <div v-for="section in visibleSections" :key="section.title" class="numInfo">
         <div>
-          <NumCounter
-            :classProp="section.colorClass"
-            :numProp="section.value"
-          />
+          <NumCounter :classProp="section.colorClass" :numProp="section.value" />
           <span class="f-16-black">{{ section.unit }}</span>
         </div>
         <span class="f-16-black" :class="section.textWarp ? 'text-warp' : ''">{{ section.title }}</span>
@@ -30,17 +17,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import NumCounter from '@/components/num-counter.vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
+import type { BoardData } from '@/types/BoardData'
 
-// Type 定義
-interface LISDataType {
-  users_online: number
-  users_todaylogin: number
-  users_count: number
-  user_insystime: number
-}
 
 // DotSwitcher 狀態
 const switchControl_People = ref(1)
@@ -49,7 +30,7 @@ function changeSwitchValue(receivedNum: number) {
 }
 
 // 取得資料
-const LISData = inject<LISDataType>('LISData')!
+const props = defineProps<{ LISData: BoardData }>()
 
 // 監控元素高度
 const elementHeight = ref(0)
@@ -73,7 +54,7 @@ onUnmounted(() => {
   observer?.disconnect()
 })
 
-// sections 抽象化
+
 interface Section {
   title: string
   value: number
@@ -86,28 +67,28 @@ interface Section {
 const sections = computed<Section[]>(() => [
   {
     title: '目前登入使用者',
-    value: LISData?.users_online ?? 0,
+    value: props.LISData.users_online ?? 0,
     unit: '人',
     colorClass: 'f-32-lakeblue',
     switchNum: 1
   },
   {
     title: '今日登入人次',
-    value: LISData?.users_todaylogin ?? 0,
+    value: props.LISData.users_todaylogin ?? 0,
     unit: '人',
     colorClass: 'f-32-moonblue',
     switchNum: 1
   },
   {
     title: '系統註冊人數',
-    value: LISData?.users_count ?? 0,
+    value: props.LISData.users_count ?? 0,
     unit: '人',
     colorClass: 'f-32-lakeblue',
     switchNum: 2
   },
   {
     title: '使用者登入系統平均時間',
-    value: LISData?.user_insystime ?? 0,
+    value: props.LISData.user_insystime ?? 0,
     unit: '分鐘',
     colorClass: 'f-32-moonblue',
     textWarp: true,
@@ -131,6 +112,7 @@ const visibleSections = computed(() =>
   align-items: center;
   gap: 20px;
 }
+
 .numInfo {
   display: flex;
   flex-direction: column;
@@ -138,7 +120,7 @@ const visibleSections = computed(() =>
   gap: 5px;
 }
 
-.f-16-black{
+.f-16-black {
   font-size: 1.6rem;
   color: var(--black);
 }

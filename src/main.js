@@ -9,7 +9,7 @@ import router from './router'
 import { createPinia } from 'pinia'
 import Antd from 'ant-design-vue'
 
-import { showModal, errorMessage ,openModalWithErrorMessage, closeModal } from './apis/utils.js';
+import { showModal, errorMessage ,openModalWithErrorMessage, closeModal } from '@/apis/utils';
 
 const app = createApp(App)
 

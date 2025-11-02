@@ -1,6 +1,5 @@
 {
   "casetype1_lifecycle_20": 50,
-  "casetype1_lifecycle_21": 30,
   "casetype1_thisyear_top10_40": [
     { "unit": "A01", "case_count": "120", "unitname": "北區客服組" },
     { "unit": "A02", "case_count": "200", "unitname": "中區專案組" },
@@ -24,10 +23,8 @@
   "casetype1_thisyear10_count": 1300,
   "casetype1_thisyear30_count": 4700,
   "casetype1_last1year_count": 20000,
-  "casetype1_lastyear11_count": 100,
   "this_year": "2023",
   "casetype1_lifecycle_10": 30,
-  "casetype1_lifecycle_11": 20,
   "casetype1_thisyear40_count": 1500,
   "casetype4_total_count": 80,
   "casetype4_lifecycle": 40,
@@ -46,12 +43,10 @@
   "now_before365": "2022/11/24 09:22:35.000",
   "casetype2_total_count": 30000,
   "casetype3_total_count": 15000,
-  "casetype1_thisyear_top10_11": [],
   "lastest_year": "2021",
   "casetype1_total_count": 50000,
   "casetype1_lastestyear20_count": 1000,
   "casetype1_lastestyear40_count": 1500,
-  "casetype1_thisyear11_count": 100,
   "last_yearDate": "2022/11/24",
   "conn_maxconnset": "500 / 400 / 300",
   "casetype1_CountbyBusinesstype": [
@@ -68,7 +63,6 @@
   "casetype1_lastyear20_count": 2000,
   "users_online": 800,
   "casetype1_lastyear30_count": 3000,
-  "casetype1_thisyear_top10_21": [],
   "user_insystime": 120,
   "casetype3_last1year_count": 5000,
   "casetype3_lifecycle": 20,
@@ -87,12 +81,9 @@
   "now": "2023/11/24 09:22:35.088",
   "users_todaylogin": 50,
   "casetype1_lastestyear41_count": 620,
-  "casetype1_lastestyear11_count": 10,
-  "casetype1_lastestyear21_count": 5,
   "casetype1_lifecycle_30": 40,
   "users_count": 4000,
   "casetype2_last1year_count": 10000,
-  "casetype1_lastyear21_count": 50,
   "casetype1_lastyear41_count": 770,
   "casetype2_lifecycle": 200,
   "this_yearDate": "2023/11/24",
@@ -110,6 +101,5 @@
   ],
   "casetype1_lastestyear10_count": 2000,
   "casetype1_lastestyear30_count": 4000,
-  "casetype1_thisyear21_count": 100,
   "casetype1_thisyear41_count": 2000
 }

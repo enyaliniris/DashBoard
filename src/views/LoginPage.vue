@@ -16,6 +16,14 @@
           <a-input-password v-model:value="form.password" placeholder="請輸入密碼" @input="validatePasswordInput" />
         </a-form-item>
 
+        <a-form-item label="角色" name="role">
+          <a-select v-model:value="form.role" placeholder="選擇角色">
+            <a-select-option value="admin">Admin</a-select-option>
+            <a-select-option value="guest">Guest</a-select-option>
+          </a-select>
+        </a-form-item>
+
+
         <a-form-item>
           <a-button class="!bg-sky-500 hover:!bg-sky-600 border-none text-white" block @click="login">
             登入
@@ -56,10 +64,10 @@ const rules = {
     { min: 6, message: '密碼至少 6 個字元', trigger: 'change' }
   ]
 }
-
 const form = ref({
   id: '',
-  password: ''
+  password: '',
+  role: '' // 新增角色欄位
 })
 
 // 即時驗證狀態
@@ -97,7 +105,6 @@ function validatePasswordInput() {
 }
 
 function login() {
-  // 先驗證即時訊息
   validateIDInput()
   validatePasswordInput()
 
@@ -105,7 +112,7 @@ function login() {
     auth.setToken('dummy-token')
     auth.setUser({
       username: form.value.id || 'DemoUser',
-      roles: ['user']
+      roles: form.value.role ? [form.value.role] : ['user'] // 以選單為主
     })
     router.push('/dashboard')
   }

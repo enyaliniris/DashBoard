@@ -36,7 +36,6 @@ const props = defineProps<{
 
 // 取全域 store
 const globalStore = useGlobalStore()
-const labels = globalStore.departmentLabels as string[]
 
 // labelList 型別
 interface LabelItem {
@@ -51,73 +50,68 @@ const LIS_Pie = ref<HTMLCanvasElement | null>(null)
 
 // 監聽資料變化並重繪
 watchEffect(() => {
-  if (!props.LISData || !LIS_Pie.value) return
-
+  const data = props.LISData
   const canvas = LIS_Pie.value
+  if (!data || !canvas) return
+
   const context = canvas.getContext('2d')
   if (!context) return
 
-  context.clearRect(0, 0, canvas.width, canvas.height) //清空畫布，避免重疊
+  // 清空畫布
+  context.clearRect(0, 0, canvas.width, canvas.height)
 
   const x = canvas.width / 2
   const y = canvas.height / 2
   const radius = 50
   const lineWidth = 15
-  const totalParts = 5
+  const gapDegrees = 20
 
-  const partValues = [
-    props.LISData.casetype1_thisyear10_count,
-    props.LISData.casetype1_thisyear20_count,
-    props.LISData.casetype1_thisyear30_count,
-    props.LISData.casetype1_thisyear40_count,
-    props.LISData.casetype1_thisyear41_count
-  ]
+  // 動態抓取符合 casetype1_thisyear\d+_count 的欄位
+  const keyPattern = /^casetype1_thisyear\d+_count$/
+  const partKeys = Object.keys(data).filter(k => keyPattern.test(k)).sort() // 排序讓順序固定
+  const partValues = partKeys.map(k => (data[k as keyof typeof data] as number) ?? 0)
+
+  if (partValues.length === 0) return
+
+  // 可自訂顏色數量，依需要增加
   const partColors = ['#01859A', '#6060F0', '#F8D060', '#30E0D0', '#F86060']
   const gradientColors = ['#C1E1FF', '#C1E1FF', '#FFDD7C', '#C1E1FF', '#F88460']
 
   let startAngle = 0
-  const gapDegrees = 20
-
   context.lineWidth = lineWidth
   context.lineCap = 'round'
 
   const sumValues = partValues.reduce((a, b) => a + b, 0)
-  const totalDegrees = 360 - totalParts * gapDegrees
+  const totalDegrees = 360 - partValues.length * gapDegrees
 
-  for (let i = 0; i < totalParts; i++) {
+  partValues.forEach((value, i) => {
     const adjustedStartAngle = startAngle + Math.PI * 2 * (gapDegrees / 360)
     const endAngle =
-      adjustedStartAngle + Math.PI * 2 * (((partValues[i] / sumValues) * totalDegrees) / 360)
+      adjustedStartAngle + Math.PI * 2 * ((value / sumValues) * totalDegrees / 360)
 
     const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height)
-    gradient.addColorStop(0, partColors[i])
-    gradient.addColorStop(1, gradientColors[i])
+    gradient.addColorStop(0, partColors[i % partColors.length])
+    gradient.addColorStop(1, gradientColors[i % gradientColors.length])
 
     context.beginPath()
     context.strokeStyle = gradient
     context.arc(x, y, radius, adjustedStartAngle, endAngle, false)
-    // 在 canvas 上畫弧線或圓形
-    // x, y：圓心的座標 radius：半徑 
-    // sAngle（startAngle）：起始角度（以「弧度」為單位），0 表示最右側（3點鐘方向）
-    // eAngle（endAngle）：結束角度（以「弧度」為單位）
-    // counterclockwise（可選）：是否逆時針畫弧，預設為 false（順時針）
     context.stroke()
 
     startAngle = endAngle
-
-
-
-  }
+  })
 
   // 計算百分比
-  const sum = partValues.reduce((acc, curr) => acc + curr, 0)
-  const percentages = partValues.map((value) => ((value / sum) * 100).toFixed(2) + '%')
+  const percentages = partValues.map(v => ((v / sumValues) * 100).toFixed(2) + '%')
 
-  labelList.value = percentages.map((percent, index) => ({
-    label: labels[index],
-    percent,
-    color: partColors[index]
-  }))
+  labelList.value = partKeys.map((key, i) => {
+    const label = globalStore.keyToLabel(key)
+    return {
+      label,
+      percent: percentages[i],
+      color: partColors[i % partColors.length]
+    }
+  })
 })
 </script>
 

@@ -2,82 +2,40 @@
   <div class="InfoCard TimeChart">
     <div class="lifecycle-title">
       <div class="clockIcon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="59"
-          height="65"
-          viewBox="0 0 59 65"
-          fill="none"
-          class="svg-element"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="59" height="65" viewBox="0 0 59 65" fill="none"
+          class="svg-element">
           <g filter="url(#filter0_ddi_181_59)">
             <circle cx="30.5" cy="32.5" r="24.5" fill="#E4EBF5" />
           </g>
           <circle cx="30.5" cy="32.5" r="23.5" stroke="#E4EBF5" stroke-width="2" />
           <path d="M30 23L30 32" stroke="#4BB2E4" stroke-width="4" stroke-linecap="round" />
-          <path
-            d="M41.9633 38.6792L31 34.0001"
-            stroke="#4BB2E4"
-            stroke-width="4"
-            stroke-linecap="round"
-          />
+          <path d="M41.9633 38.6792L31 34.0001" stroke="#4BB2E4" stroke-width="4" stroke-linecap="round" />
           <circle cx="30.5" cy="33.5" r="3.5" fill="#4BB2E4" />
           <defs>
-            <filter
-              id="filter0_ddi_181_59"
-              x="0"
-              y="0"
-              width="59"
-              height="65"
-              filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
-            >
+            <filter id="filter0_ddi_181_59" x="0" y="0" width="59" height="65" filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB">
               <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
               <feOffset dx="-2" dy="-4" />
               <feGaussianBlur stdDeviation="2" />
               <feComposite in2="hardAlpha" operator="out" />
               <feColorMatrix type="matrix" values="0 0 0 0 0.9375 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
               <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_181_59" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
               <feOffset dy="4" />
               <feGaussianBlur stdDeviation="2" />
               <feComposite in2="hardAlpha" operator="out" />
               <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-              <feBlend
-                mode="normal"
-                in2="effect1_dropShadow_181_59"
-                result="effect2_dropShadow_181_59"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect2_dropShadow_181_59"
-                result="shape"
-              />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feBlend mode="normal" in2="effect1_dropShadow_181_59" result="effect2_dropShadow_181_59" />
+              <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_181_59" result="shape" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha" />
               <feOffset dy="4" />
               <feGaussianBlur stdDeviation="0.95" />
               <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0.787587 0 0 0 0 0.857187 0 0 0 0 0.879167 0 0 0 0.43 0"
-              />
+              <feColorMatrix type="matrix" values="0 0 0 0 0.787587 0 0 0 0 0.857187 0 0 0 0 0.879167 0 0 0 0.43 0" />
               <feBlend mode="normal" in2="shape" result="effect3_innerShadow_181_59" />
             </filter>
           </defs>
@@ -88,107 +46,122 @@
 
     <div class="lifecycle-container">
       <div v-for="(item, index) in LIS_LifeCycle" :key="index">
-      <div v-if="item.type === 'hour' && switchControl_LifeCycle === 1">
-        <div class="lifecycle-time">
-            <span class="bar-title">{{item.title}}</span>
-            <div class="bar" :style="{ background:item.colors, width:item.width }"></div>
-            <span class="bar-time">{{item.lifecycle}}</span>
+        <div v-if="item.type === 'hour' && switchControl_LifeCycle === 1">
+          <div class="lifecycle-time">
+            <a-tooltip :title="item.title">
+              <span class="bar-title ellipsis">{{ item.title }}</span>
+            </a-tooltip>
+            <div class="bar" :style="{ background: item.colors, width: item.width }"></div>
+            <a-tooltip :title="item.lifecycle">
+              <span class="bar-time">{{ item.lifecycle }}</span>
+            </a-tooltip>
+          </div>
+
         </div>
-      </div>
-      <div v-else-if="item.type === 'min'  && switchControl_LifeCycle === 2">
-        <div class="lifecycle-time">
-            <span class="bar-title">{{item.title}}</span>
-            <div class="bar" :style="{ background:item.colors, width:item.width }"></div>
-            <span class="bar-time">{{item.lifecycle}}</span>
+        <div v-else-if="item.type === 'min' && switchControl_LifeCycle === 2">
+          <div class="lifecycle-time">
+            <a-tooltip :title="item.title">
+              <span class="bar-title ellipsis">{{ item.title }}</span>
+            </a-tooltip>
+            <div class="bar" :style="{ background: item.colors, width: item.width }"></div>
+            <a-tooltip :title="item.lifecycle">
+              <span class="bar-time">{{ item.lifecycle }}</span>
+            </a-tooltip>
+          </div>
         </div>
-      </div>
       </div>
     </div>
 
     <div class="lifecycle-dotswitcher">
-     <DotSwitcher :DotNum = "2" :switchControl ="switchControl_LifeCycle" @change-switch="changeSwitchValue" :isColumn="true" :marginLeft="'40px'" />
+      <DotSwitcher :DotNum="2" :switchControl="switchControl_LifeCycle" @change-switch="changeSwitchValue"
+        :isColumn="true" :marginLeft="'20px'" />
     </div>
-   
+
   </div>
 </template>
 <script setup>
-import { ref, watchEffect} from 'vue'
+import { ref, watchEffect } from 'vue'
 import DotSwitcher from '@/components/dot-switcher.vue'
 import { useGlobalStore } from '@/stores/global';
 const globalStore = useGlobalStore();
-const labels = globalStore.departmentLabels;
-const labelKeys = ["casetype1_lifecycle_10", "casetype1_lifecycle_20", "casetype1_lifecycle_30", "casetype1_lifecycle_40", "casetype1_lifecycle_41"]
-const labelColors = [
-  "linear-gradient(127deg, #66D4E5 5.97%, #01859A 102.98%)",
-  "linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)",
-  "linear-gradient(127deg, #6060F0 5.97%, #01859A 102.98%)",
-  "linear-gradient(90deg, #F8D060 -18.98%, #FF7D61 113.88%)",
-  "linear-gradient(90deg, #30E0D0 -18.98%, #00AD9D 113.88%)"
-]
+
+
+
 
 const props = defineProps({
-    LISData: Object,
+  LISData: Object,
 })
 let LIS_LifeCycle = ref([])
-
 let switchControl_LifeCycle = ref(1)
 
 function changeSwitchValue(receivedNum) {
-    switchControl_LifeCycle.value = receivedNum; // 更新父組件的 switchControl 值
+  switchControl_LifeCycle.value = receivedNum; // 更新父組件的 switchControl 值
 }
 
 function convertToHoursAndMinutes(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return hours + "小時" + remainingMinutes + "分鐘";
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return hours + "小時" + remainingMinutes + "分鐘";
 }
-watchEffect (() =>  {
-  if(props.LISData){
-  const commonLifeCycle = labels.map((title, index) => ({
-    title,
-    lifecycle: props.LISData[labelKeys[index]],
-    colors: labelColors[index]
-  }))
-  // 特殊項目
-  const specialLifeCycle = [
-    { title: "鑑估報告", lifecycle: props.LISData.casetype2_lifecycle, colors: "linear-gradient(90deg, #7D82D6 -4.86%, #E16464 107.03%)" },
-    { title: "預估報告案", lifecycle: props.LISData.casetype3_lifecycle, colors: "linear-gradient(90deg, #F9C260 -4.86%, #30E0D0 107.03%)" },
-    { title: "預估報告案", lifecycle: props.LISData.casetype4_lifecycle, colors: "linear-gradient(90deg, #6060F0 -4.86%, #A3EFFF 107.03%)" }
-  ]
-  // 合併
-  const lifeCycle = [...commonLifeCycle, ...specialLifeCycle]
-  const hoursGroup = lifeCycle.filter(num => num.lifecycle > 60);
-  const minGroup = lifeCycle.filter(num => num.lifecycle <= 60);
+watchEffect(() => {
+  if (props.LISData) {
 
-  let hoursTotal = hoursGroup.reduce((a, b) => a + b.lifecycle, 0)
-  let minTotal = minGroup.reduce((a, b) => a + b.lifecycle, 0)
+    // --- 1. 找出符合部門生命周期的 key ---
+    const keyPattern = /^casetype1_lifecycle_\d+$/
+    const deptKeys = Object.keys(props.LISData).filter(k => keyPattern.test(k)).sort()
+    console.log("deptKeys", deptKeys)
 
-  //小時組 的寬度
-  hoursGroup.forEach((item)=>{
-    const percentage = (item.lifecycle / hoursTotal) * 100;
-    let decimalPercentage = percentage.toFixed(2);
- 
-    const baseValue = 400;
-    const calculatedWidth = (baseValue * decimalPercentage) / 100;
-    item.width = calculatedWidth + "px"
-    item.type = "hour"
-    item.lifecycle = convertToHoursAndMinutes(item.lifecycle)
- })
+    // --- 2. 對應標題和顏色 ---
+    const deptTitles = globalStore.departmentLabels
+    const deptColors = globalStore.departmentColors
 
-  
-  //分鐘組 的寬度
-  minGroup.forEach((item)=>{
-     const percentage = (item.lifecycle / minTotal) * 100;
-    let decimalPercentage = percentage.toFixed(2);
- 
-    const baseValue = 400; 
-    const calculatedWidth = (baseValue * decimalPercentage) / 100;
-    item.width = calculatedWidth + "px"
-    item.type = "min"
-    item.lifecycle = item.lifecycle + "分鐘"
-  })
+    // --- 3. map key 對應資料 ---
+    const commonLifeCycle = deptKeys.map((key, index) => ({
+      title: deptTitles[index] ?? key,
+      lifecycle: (props.LISData[key]) ?? 0,
+      colors: deptColors[index] ?? "#ccc"
+    }))
 
-   LIS_LifeCycle.value = hoursGroup.concat(minGroup)
+    // 特殊項目
+    const specialLifeCycle = [
+      { title: "鑑估報告", lifecycle: props.LISData.casetype2_lifecycle, colors: "linear-gradient(90deg, #7D82D6 -4.86%, #E16464 107.03%)" },
+      { title: "預估報告案", lifecycle: props.LISData.casetype3_lifecycle, colors: "linear-gradient(90deg, #F9C260 -4.86%, #30E0D0 107.03%)" },
+      { title: "其他報告案", lifecycle: props.LISData.casetype4_lifecycle, colors: "linear-gradient(90deg, #6060F0 -4.86%, #A3EFFF 107.03%)" }
+    ]
+    // 合併
+    const lifeCycle = [...commonLifeCycle, ...specialLifeCycle]
+    const hoursGroup = lifeCycle.filter(num => num.lifecycle > 60);
+    const minGroup = lifeCycle.filter(num => num.lifecycle <= 60);
+
+    let hoursTotal = hoursGroup.reduce((a, b) => a + b.lifecycle, 0)
+    let minTotal = minGroup.reduce((a, b) => a + b.lifecycle, 0)
+
+    //小時組 的寬度
+    hoursGroup.forEach((item) => {
+      const percentage = (item.lifecycle / hoursTotal) * 100;
+      let decimalPercentage = percentage.toFixed(2);
+
+      const baseValue = 400;
+      const calculatedWidth = (baseValue * decimalPercentage) / 100;
+      item.width = calculatedWidth + "px"
+      item.type = "hour"
+      item.lifecycle = convertToHoursAndMinutes(item.lifecycle)
+    })
+
+
+    //分鐘組 的寬度
+    minGroup.forEach((item) => {
+      const percentage = (item.lifecycle / minTotal) * 100;
+      let decimalPercentage = percentage.toFixed(2);
+
+      const baseValue = 400;
+      const calculatedWidth = (baseValue * decimalPercentage) / 100;
+      item.width = calculatedWidth + "px"
+      item.type = "min"
+      item.lifecycle = item.lifecycle + "分鐘"
+    })
+
+    LIS_LifeCycle.value = hoursGroup.concat(minGroup)
   }
 })
 
@@ -199,7 +172,8 @@ watchEffect (() =>  {
 /*LifeCycle*/
 
 .clockIcon {
-  width: 40px;   /* 控制顯示大小 */
+  width: 40px;
+  /* 控制顯示大小 */
   height: 45px;
 }
 
@@ -208,51 +182,64 @@ watchEffect (() =>  {
   height: 100%;
 }
 
-.lifecycle-container{
+.lifecycle-container {
   display: flex;
-
-}
-.lifecycle-title{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0px;
-    margin-right: 20px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 1000px;
+  min-width: 300px;
 }
 
-.lifecycle-time{
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap:5px;
-    flex-direction: column;
-    font-size: 1.5rem;
-    position: relative;
+.lifecycle-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0px;
+  margin-right: 20px;
+}
+
+.lifecycle-time {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-direction: column;
+  font-size: 1.5rem;
+  position: relative;
 }
 
 
-.bar{
-    /*width: 200px;*/
-    height: 13px;
-    border-radius: 30px;
-    /*background: linear-gradient(127deg, #66D4E5 5.97%, #01859A 102.98%);*/
+.bar {
+  /*width: 200px;*/
+  height: 13px;
+  border-radius: 30px;
+  /*background: linear-gradient(127deg, #66D4E5 5.97%, #01859A 102.98%);*/
 }
 
-.bar-title{
-    width: 100px;
-    position: absolute;
-    bottom: 20px;
-    text-align: center;
+.bar-title {
+  width: 100px;
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
 }
 
-.bar-time{
-    width: 50px;
-    position: absolute;
-    top: 15px;
-    text-align: center;
-    font-size: 1rem;
+.bar-time {
+  width: 50px;
+  position: absolute;
+  top: 15px;
+  text-align: center;
+  font-size: 1rem;
 }
 
+.ellipsis {
+  display: inline-block;
+  max-width: 3em;
+  /* 限制最多顯示 3 個字元 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
 </style>

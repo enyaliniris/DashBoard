@@ -20,6 +20,8 @@
 <script lang="ts" setup>
 import { ref, watchEffect } from 'vue'
 import type { BoardData } from '@/types/BoardData'
+import { useGlobalStore } from '@/stores/global'
+const globalStore = useGlobalStore()
 
 // 定義 props
 const props = defineProps<{
@@ -35,32 +37,37 @@ interface RankItem {
 //  排行榜陣列
 const RankList = ref<RankItem[]>([])
 
+//部門名稱
+const deptTitles = globalStore.departmentLabels
+
 watchEffect(() => {
-  if (props.LISData) {
-    const {
-      casetype1_thisyear_top10_10: top10,
-      casetype1_thisyear_top10_20: top20,
-      casetype1_thisyear_top10_30: top30,
-      casetype1_thisyear_top10_40: top40,
-      casetype1_thisyear_top10_41: top41
-    } = props.LISData
+  if (!props.LISData) return;
 
-    const department = ['研發部', '行銷部', '客服部', '專案部', '支援部']
+  const LISData = props.LISData as unknown as Record<string, RankItem[]>;
 
-    // 確保五個陣列都有資料
-    if (top10 && top20 && top30 && top40 && top41) {
-      RankList.value = [top10[0], top20[0], top30[0], top40[0], top41[0]].map(
-        (item, index) => ({
-          ...item,
-          department: department[index]
-        })
-      )
 
-      // 若前端要使用排序邏輯：
-      // RankList.value.sort((a, b) => Number(b.case_count) - Number(a.case_count))
-    }
-  }
-})
+  // 找出所有 top 欄位
+  const rankKeys = Object.keys(props.LISData)
+    .filter(k => /^casetype1_thisyear_top\d+/.test(k)) // 動態匹配 top 欄位
+
+  console.log("rankKeys", rankKeys)
+
+  // 遍歷每個 top 陣列，取第一筆資料，組成 RankItem
+  const ranks: RankItem[] = rankKeys.map((key, index) => {
+    const arr = LISData[key];
+    console.log("arr", arr)
+    if (!arr || !arr.length) return null;
+    return {
+      ...arr[0],
+      department: deptTitles[index]
+    };
+  }).filter(Boolean) as RankItem[];
+
+  // 排序（可選）
+  //ranks.sort((a, b) => Number(b.case_count) - Number(a.case_count));
+
+  RankList.value = ranks;
+});
 </script>
 
 <style scope>
