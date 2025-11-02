@@ -14,11 +14,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Dashboard.vue'),
     meta: { requiresAuth: true }
   },
-  {
-    path: '/403',
-    name: 'Forbidden',
-    component: () => import('@/views/Forbidden.vue')
-  }
 ]
 
 const router = createRouter({
