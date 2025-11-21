@@ -14,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Dashboard.vue'),
     meta: { requiresAuth: true }
   },
+   {
+    path: '/dynamicform',
+    name: 'DynamicForm',
+    component: () => import('@/views/DynamicForm.vue'),
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = createRouter({

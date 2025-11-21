@@ -114,7 +114,7 @@ function login() {
       username: form.value.id || 'DemoUser',
       roles: form.value.role ? [form.value.role] : ['user'] // 以選單為主
     })
-    router.push('/dashboard')
+    router.push('/dynamicform')
   }
 }
 </script>
