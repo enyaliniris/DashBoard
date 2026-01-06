@@ -132,6 +132,7 @@ watchEffect(() => {
 }
 
 .Pie_Container {
+  margin: 10px;
   display: flex;
 }
 

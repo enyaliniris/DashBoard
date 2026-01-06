@@ -5,17 +5,18 @@
       <div class="login-title">歡迎登入 數據庫</div>
       <div class="f-title mb-6">頁面展示，帳號密碼自訂</div>
 
-      <a-form :model="form" :rules="rules" ref="loginFormRef" layout="vertical" :validate-trigger="['change', 'blur']">
+      <a-form ref="loginFormRef" :model="form" :rules="rules" layout="vertical">
         <!-- 使用者ID -->
-        <a-form-item label="使用者ID" name="id" :validate-status="idStatus" :help="idHelp">
-          <a-input v-model:value="form.id" placeholder="請輸入使用者ID" @input="validateIDInput" />
+        <a-form-item label="使用者ID" name="id">
+          <a-input v-model:value="form.id" placeholder="請輸入使用者ID" autocomplete="username" />
         </a-form-item>
 
         <!-- 密碼 -->
-        <a-form-item label="密碼" name="password" :validate-status="passwordStatus" :help="passwordHelp">
-          <a-input-password v-model:value="form.password" placeholder="請輸入密碼" @input="validatePasswordInput" />
+        <a-form-item label="密碼" name="password">
+          <a-input-password v-model:value="form.password" placeholder="請輸入密碼" autocomplete="current-password" />
         </a-form-item>
 
+        <!-- 角色 -->
         <a-form-item label="角色" name="role">
           <a-select v-model:value="form.role" placeholder="選擇角色">
             <a-select-option value="admin">Admin</a-select-option>
@@ -23,10 +24,15 @@
           </a-select>
         </a-form-item>
 
-
         <a-form-item>
           <a-button class="!bg-sky-500 hover:!bg-sky-600 border-none text-white" block @click="login">
             登入
+          </a-button>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button block type="link" @click="skipLogin">
+            略過登入（{{ countdown }} 秒後自動登入）
           </a-button>
         </a-form-item>
       </a-form>
@@ -44,79 +50,119 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import type { FormInstance } from 'ant-design-vue'
 
-
 const auth = useAuthStore()
 const router = useRouter()
+const countdown = ref(15)
+let timer: number | null = null
 
-const loginFormRef = ref<FormInstance | null>(null)
-const rules = {
-  id: [
-    { required: true, message: '請輸入使用者ID', trigger: 'change' },
-    { min: 3, message: '至少輸入 3 個字元', trigger: 'change' }
-  ],
-  password: [
-    { required: true, message: '請輸入密碼', trigger: 'change' },
-    { min: 6, message: '密碼至少 6 個字元', trigger: 'change' }
-  ]
-}
+const loginFormRef = ref<FormInstance>()
+
 const form = ref({
   id: '',
   password: '',
-  role: '' // 新增角色欄位
+  role: ''
 })
 
-// 即時驗證狀態
-const idStatus = ref<'success' | 'error' | ''>('')
-const passwordStatus = ref<'success' | 'error' | ''>('')
 
-const idHelp = ref('')
-const passwordHelp = ref('')
-
-// 簡單驗證函式
-function validateIDInput() {
-  if (!form.value.id) {
-    idStatus.value = 'error'
-    idHelp.value = '請輸入使用者ID'
-  } else if (form.value.id.length < 3) {
-    idStatus.value = 'error'
-    idHelp.value = '至少輸入 3 個字元'
-  } else {
-    idStatus.value = 'success'
-    idHelp.value = ''
-  }
+const rules = {
+  id: [
+    {
+      required: true,
+      message: '請輸入使用者ID',
+      trigger: 'blur'
+    },
+    {
+      min: 6,
+      max: 20,
+      message: '使用者ID長度需介於 6～20 字元',
+      trigger: 'blur'
+    },
+    {
+      pattern: /^[a-zA-Z0-9]+$/,
+      message: '使用者ID僅能包含英文字母與數字',
+      trigger: 'blur'
+    }
+  ],
+  password: [
+    {
+      required: true,
+      message: '請輸入密碼',
+      trigger: 'blur'
+    },
+    {
+      min: 8,
+      message: '密碼至少 8 個字元',
+      trigger: 'blur'
+    }
+  ],
+  role: [
+    {
+      required: true,
+      message: '請選擇角色',
+      trigger: 'change'
+    }
+  ]
 }
 
-function validatePasswordInput() {
-  if (!form.value.password) {
-    passwordStatus.value = 'error'
-    passwordHelp.value = '請輸入密碼'
-  } else if (form.value.password.length < 6) {
-    passwordStatus.value = 'error'
-    passwordHelp.value = '密碼至少 6 個字元'
-  } else {
-    passwordStatus.value = 'success'
-    passwordHelp.value = ''
-  }
-}
 
-function login() {
-  validateIDInput()
-  validatePasswordInput()
+async function login() {
+  try {
+    await loginFormRef.value?.validate()
 
-  if (idStatus.value === 'success' && passwordStatus.value === 'success') {
+    // Demo：成功後設定假 token
     auth.setToken('dummy-token')
     auth.setUser({
-      username: form.value.id || 'DemoUser',
-      roles: form.value.role ? [form.value.role] : ['user'] // 以選單為主
+      username: form.value.id,
+      roles: [form.value.role]
     })
+
     router.push('/dashboard')
+  } catch {
+    // 驗證失敗時不做任何事，錯誤由 Form 顯示
   }
 }
+
+function skipLogin() {
+  clearTimer()
+
+  auth.setToken('dummy-token')
+  auth.setUser({
+    username: 'demo-user',
+    roles: ['guest']
+  })
+
+  router.push('/dashboard')
+}
+
+function startCountdown() {
+  timer = window.setInterval(() => {
+    countdown.value--
+
+    if (countdown.value <= 0) {
+      skipLogin()
+    }
+  }, 1000)
+}
+
+function clearTimer() {
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+}
+
+onMounted(() => {
+  startCountdown()
+})
+
+onBeforeUnmount(() => {
+  clearTimer()
+})
 </script>
 
 <style scoped>
